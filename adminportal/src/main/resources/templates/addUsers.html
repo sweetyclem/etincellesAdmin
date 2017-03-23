@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+<meta charset="utf-8" />
+<body>
+	<div th:replace="common/header :: navbar" />
+
+	<div class="container">
+		<div class="row" style="margin-bottom: -100px;">
+			<div class="col-xs-8">
+				<h2 class="section-headline">
+					<span></span>
+				</h2>
+			</div>
+		</div>
+		<hr
+			style="position: absolute; width: 100%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;" />
+		<img class="img-responsive" src="#" style="margin-top: -75px;" />
+
+		<div class="row" style="margin-top: 60px;">
+			<div class="col-xs-8 col-xs-offset-2">
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+					<li th:classappend="${classActiveNewAccount}? 'active'"><a
+						class="no-under" href="#tab-1" data-toggle="tab"> <span>Ajouter
+								des personnes</span></a></li>
+				</ul>
+
+				<!-- Tab panels -->
+				<div class="tab-content">
+
+					<!-- create new user pane -->
+					<div class="tab-pane fade" id="tab-1"
+						th:classappend="${classActiveNewAccount}? 'in active'">
+						<div class="panel-group">
+							<div class="panel panel-default" style="border: none;">
+								<div class="panel-body"
+									style="background-color: #ededed; margin-top: 20px;">
+									<div class="alert alert-info" th:if="${emailSent}">Emails
+										envoyés.</div>
+										<div class="alert alert-danger" th:if="${noType}" th:text="${noType}"></div>
+									<div class="alert alert-danger" th:if="${rejectedEmails}">
+										Emails invalides :
+										<div th:each="email : ${rejectedEmails}">
+											<p th:text="${email}"></p>
+										</div>
+									</div>
+									<div class="alert alert-danger" th:if="${emailExists}">
+										Emails déjà envoyés à :
+										<div th:each="email : ${emailExists}">
+											<p th:text="${email}"></p>
+										</div>
+									</div>
+
+									<form th:action="@{/addUsers}" method="post">
+
+										<div class="form-group">
+											<label for="email">* Adresses email (une seule par
+												ligne) : </label>
+											<!-- <input required="required" type="email" class="form-control"
+												name="email" multiple="multiple"/> -->
+											<textarea autofocus="autofocus" rows="10" cols="20" required="required"
+												type="email" class="form-control" name="email"></textarea>
+										</div>
+
+										<div class="form-group">
+											<label for="category">* Catégorie</label> <select
+												id="category" required="required" name="category"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:value="${etincelle}">Etincelle</option>
+												<option th:value="${mentor}">Mentor.e</option>
+												<option th:value="${coach}">Coach</option>
+												<option th:value="${staff}">Staff</option>
+											</select>
+										</div>
+										
+										<div class="form-group" id="type">
+											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:value="${career}">Carrière</option>
+												<option th:value="${startup}">Startup</option>
+											</select>
+										</div>
+
+										<button type="submit" class="btn btn-primary">Valider</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="common/header :: body-bottom-scripts" />
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#type").hide();
+	});
+	
+	$(function () {
+		  $("#category").change(function() {
+		    var val = $(this).val();
+		    if(val === "ETINCELLE") {
+		        $("#type").show();
+		        $("#typeSelect").attr("required", "required");
+		    }
+		    else if(val === "MENTOR") {
+		        $("#type").show();
+		        $("#typeSelect").attr("required", "required");
+		    }		    
+		    else if(val === "") {
+		        $("#type").hide();
+		    }
+		    else {
+		    	$("#type").hide();
+		    }
+		  });
+		});
+
+	</script>
+</body>
+</html>
