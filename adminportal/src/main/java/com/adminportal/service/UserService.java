@@ -7,6 +7,7 @@ import com.adminportal.entities.PasswordResetToken;
 import com.adminportal.entities.User;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
+import com.adminportal.enumeration.City;
 
 public interface UserService {
     PasswordResetToken getPasswordResetToken( final String token );
@@ -24,4 +25,8 @@ public interface UserService {
     List<User> findAll();
 
     List<User> findByCategory( Category category );
+
+    List<User> findByCity( City city );
+
+    public List<User> blurrySearch( String name );
 }

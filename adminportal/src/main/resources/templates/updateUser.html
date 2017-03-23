@@ -89,10 +89,22 @@
 										</div>
 										<p style="color: #828282"></p>
 
-										<div class="form-group">
-											<label for="city">* Ville</label><input type="text"
-												class="form-control" id="city" name="city"
-												required="required" th:value="${user.city}" />
+										<div th:if="${user.city != null}" class="form-group" id="city">
+											<label for="city">* Ville</label> <select name="city" id="citySelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir une ville</option>
+												<option th:selected="(${user.city}=='Paris')" th:value="${paris}">Paris</option>
+												<option th:selected="(${user.city}=='Lyon')" th:value="${lyon}">Lyon</option>
+											</select>
+										</div>
+										
+										<div th:if="${user.city == null}" class="form-group" id="city">
+											<label for="city">* Ville</label> <select name="city" id="citySelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir une ville</option>
+												<option th:value="${paris}">Paris</option>
+												<option th:value="${lyon}">Lyon</option>
+											</select>
 										</div>
 										
 										<div class="form-group" th:if="${user.category != null}">
@@ -107,7 +119,28 @@
 											</select>
 										</div>
 										
+										<div class="form-group" th:if="${user.category == null}">
+											<label for="category">* Catégorie</label> <select
+												id="category" required="required" name="category"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:value="${etincelle}">Etincelle</option>
+												<option th:value="${mentor}">Mentor.e</option>
+												<option th:value="${coach}">Coach</option>
+												<option th:value="${staff}">Staff</option>
+											</select>
+										</div>
+										
 										<div class="form-group" id="type" th:if="${user.type != null}">
+											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:selected="(${user.type.name()}=='CAREER')" th:value="${career}">Carrière</option>
+												<option th:selected="(${user.type.name()}=='STARTUP')" th:value="${startup}">Startup</option>
+											</select>
+										</div>
+										
+										<div class="form-group" id="type" th:if="${user.type == null and (user.category.name()=='ETINCELLE' or user.category.name()=='MENTOR')}">
 											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>

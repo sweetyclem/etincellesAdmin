@@ -1,5 +1,6 @@
 package com.adminportal.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import com.adminportal.entities.PasswordResetToken;
 import com.adminportal.entities.User;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
+import com.adminportal.enumeration.City;
 import com.adminportal.repository.PasswordResetTokenRepository;
 import com.adminportal.repository.RoleRepository;
 import com.adminportal.repository.UserRepository;
@@ -67,13 +69,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById( Long id ) {
-        return userRepository.findOne( id );
+    public User save( User user ) {
+        return userRepository.save( user );
     }
 
     @Override
-    public User save( User user ) {
-        return userRepository.save( user );
+    public User findById( Long id ) {
+        return userRepository.findOne( id );
     }
 
     @Override
@@ -84,6 +86,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByCategory( Category category ) {
         return userRepository.findByCategory( category );
+    }
+
+    @Override
+    public List<User> blurrySearch( String name ) {
+        List<User> firstNameList = userRepository.findByfirstNameContaining( name );
+        List<User> lastNameList = userRepository.findBylastNameContaining( name );
+        List<User> activeUserList = new ArrayList<>();
+
+        for ( User user : firstNameList ) {
+            if ( user.getEnabled() ) {
+                activeUserList.add( user );
+            }
+        }
+
+        for ( User user : lastNameList ) {
+            if ( user.getEnabled() && !firstNameList.contains( user ) ) {
+                activeUserList.add( user );
+            }
+        }
+
+        return activeUserList;
+    }
+
+    @Override
+    public List<User> findByCity( City city ) {
+        return userRepository.findByCity( city );
     }
 
 }
