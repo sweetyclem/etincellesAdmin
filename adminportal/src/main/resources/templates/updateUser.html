@@ -93,8 +93,8 @@
 											<label for="city">* Ville</label> <select name="city" id="citySelect"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir une ville</option>
-												<option th:selected="(${user.city}=='Paris')" th:value="${paris}">Paris</option>
-												<option th:selected="(${user.city}=='Lyon')" th:value="${lyon}">Lyon</option>
+												<option th:selected="(${user.city}=='Paris')" th:value="Paris">Paris</option>
+												<option th:selected="(${user.city}=='Lyon')" th:value="Lyon">Lyon</option>
 											</select>
 										</div>
 										
@@ -102,20 +102,19 @@
 											<label for="city">* Ville</label> <select name="city" id="citySelect"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir une ville</option>
-												<option th:value="${paris}">Paris</option>
-												<option th:value="${lyon}">Lyon</option>
+												<option th:value="Paris">Paris</option>
+												<option th:value="Lyon">Lyon</option>
 											</select>
 										</div>
-										
 										<div class="form-group" th:if="${user.category != null}">
 											<label for="category">* Catégorie</label> <select
 												id="category" required="required" name="category"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:selected="(${user.category.name()}=='ETINCELLE')" th:value="${etincelle}">Etincelle</option>
-												<option th:selected="(${user.category.name()}=='MENTOR')" th:value="${mentor}">Mentor.e</option>
-												<option th:selected="(${user.category.name()}=='COACH')" th:value="${coach}">Coach</option>
-												<option th:selected="(${user.category.name()}=='STAFF')" th:value="${staff}">Staff</option>
+												<option th:selected="(${user.category.name()}=='ETINCELLE')" th:value="ETINCELLE">Etincelle</option>
+												<option th:selected="(${user.category.name()}=='MENTOR')" th:value="MENTOR">Mentor.e</option>
+												<option th:selected="(${user.category.name()}=='COACH')" th:value="COACH">Coach</option>
+												<option th:selected="(${user.category.name()}=='STAFF')" th:value="STAFF">Staff</option>
 											</select>
 										</div>
 										
@@ -124,29 +123,37 @@
 												id="category" required="required" name="category"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:value="${etincelle}">Etincelle</option>
-												<option th:value="${mentor}">Mentor.e</option>
-												<option th:value="${coach}">Coach</option>
-												<option th:value="${staff}">Staff</option>
+												<option th:value="ETINCELLE">Etincelle</option>
+												<option th:value="MENTOR">Mentor.e</option>
+												<option th:value="COACH">Coach</option>
+												<option th:value="STAFF">Staff</option>
 											</select>
 										</div>
 										
 										<div class="form-group" id="type" th:if="${user.type != null}">
-											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
+											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect1"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:selected="(${user.type.name()}=='CAREER')" th:value="${career}">Carrière</option>
-												<option th:selected="(${user.type.name()}=='STARTUP')" th:value="${startup}">Startup</option>
+												<option th:selected="(${user.type.name()}=='CAREER')" th:value="CAREER">Carrière</option>
+												<option th:selected="(${user.type.name()}=='STARTUP')" th:value="STARTUP">Startup</option>
 											</select>
 										</div>
 										
-										<div class="form-group" id="type" th:if="${user.type == null and (user.category.name()=='ETINCELLE' or user.category.name()=='MENTOR')}">
+										<div class="form-group" id="typeDiv" th:if="${user.type == null}">
 											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:selected="(${user.type.name()}=='CAREER')" th:value="${career}">Carrière</option>
-												<option th:selected="(${user.type.name()}=='STARTUP')" th:value="${startup}">Startup</option>
+												<option th:value="CAREER">Carrière</option>
+												<option th:value="STARTUP">Startup</option>
 											</select>
+										</div>
+										
+										<!-- Pour étincelles -->
+										<div class="form-group"
+											th:if="(${user.category != null and user.category.name() == 'ETINCELLE'})">
+											<label for="promo">* Promo</label><input type="number" required="required"
+												class="form-control" id="promo" name="promo"
+												th:value="${user.promo}" />
 										</div>
 
 										<div class="form-group">
@@ -168,15 +175,7 @@
 											<label for="picture">Photo</label><input type="file"
 												class="form-control" id="picture" name="picture"
 												th:value="${user.picture}" />
-										</div>
-
-										<!-- Pour étincelles -->
-										<div class="form-group"
-											th:if="(${user.category != null and user.category.name() == 'ETINCELLE'})">
-											<label for="promo">Promo</label><input type="number"
-												class="form-control" id="promo" name="promo"
-												th:value="${user.promo}" />
-										</div>
+										</div>										
 
 										<!-- Pour mentor.e.s et coachs -->
 										<div class="form-group">
@@ -240,5 +239,31 @@
 
 
 	<div th:replace="common/header :: body-bottom-scripts" />
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#typeDiv").hide();
+	});
+	
+	$(function () {
+		  $("#category").change(function() {
+		    var val = $(this).val();
+		    if(val === "ETINCELLE") {
+		        $("#typeDiv").show();
+		        $("#typeSelect").attr("required", "required");
+		    }
+		    else if(val === "MENTOR") {
+		        $("#typeDiv").show();
+		        $("#typeSelect").attr("required", "required");
+		    }		    
+		    else if(val === "") {
+		        $("#typeDiv").hide();
+		    }
+		    else {
+		    	$("#typeDiv").hide();
+		    }
+		  });
+		});
+
+	</script>
 </body>
 </html>

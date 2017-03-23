@@ -168,7 +168,7 @@ public class HomeController {
         User user = userService.findByEmail( activeUser.getEmail() );
         model.addAttribute( "user", user );
         model.addAttribute( "classActiveEdit", true );
-        return "myProfile";
+        return "updateUser";
     }
 
     @RequestMapping( value = "/updateUserInfo", method = RequestMethod.POST )
@@ -184,7 +184,7 @@ public class HomeController {
         if ( userService.findByEmail( user.getEmail() ) != null ) {
             if ( userService.findByEmail( user.getEmail() ).getId() != currentUser.getId() ) {
                 model.addAttribute( "emailExists", true );
-                return "myProfile";
+                return "updateUser";
             }
         }
 
@@ -267,4 +267,11 @@ public class HomeController {
         return "directory";
     }
 
+    @RequestMapping( "/addUsers" )
+    public String addUser( Model model ) {
+        User user = new User();
+        model.addAttribute( "user", user );
+        model.addAttribute( "classActiveNewAccount", true );
+        return "addUsers";
+    }
 }

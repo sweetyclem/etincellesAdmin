@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.adminportal.entities.User;
 import com.adminportal.entities.security.Role;
 import com.adminportal.entities.security.UserRole;
+import com.adminportal.enumeration.Category;
 import com.adminportal.service.UserService;
 import com.adminportal.utility.SecurityUtility;
 
@@ -27,6 +28,7 @@ public class AdminPortalApplication implements CommandLineRunner {
     public void run( String... args ) throws Exception {
         User user1 = new User();
         user1.setEmail( "admin@gmail.com" );
+        user1.setCategory( Category.STAFF );
         user1.setPassword( SecurityUtility.passwordEncoder().encode( "admin" ) );
         Set<UserRole> userRoles = new HashSet<>();
         Role role1 = new Role();
