@@ -20,9 +20,6 @@
 
 		<hr />
 		<div class="row">
-			<div class="alert alert-danger" th:if="${incorrectPassword}">
-				<strong>Le mot de passe actuel est incorrect</strong>
-			</div>
 
 			<div class="alert alert-danger" th:if="${emailExists}">
 				<strong>Cette adresse email est déjà utilisée</strong>
@@ -111,10 +108,10 @@
 												id="category" required="required" name="category"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:selected="(${user.category.name()}=='ETINCELLE')" th:value="ETINCELLE">Etincelle</option>
-												<option th:selected="(${user.category.name()}=='MENTOR')" th:value="MENTOR">Mentor.e</option>
-												<option th:selected="(${user.category.name()}=='COACH')" th:value="COACH">Coach</option>
-												<option th:selected="(${user.category.name()}=='STAFF')" th:value="STAFF">Staff</option>
+												<option th:selected="(${user.category.name()}=='Etincelle')" th:value="Etincelle">Etincelle</option>
+												<option th:selected="(${user.category.name()}=='Mentore')" th:value="Mentore">Mentor.e</option>
+												<option th:selected="(${user.category.name()}=='Coach')" th:value="Coach">Coach</option>
+												<option th:selected="(${user.category.name()}=='Staff')" th:value="Staff">Staff</option>
 											</select>
 										</div>
 										
@@ -123,10 +120,10 @@
 												id="category" required="required" name="category"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:value="ETINCELLE">Etincelle</option>
-												<option th:value="MENTOR">Mentor.e</option>
-												<option th:value="COACH">Coach</option>
-												<option th:value="STAFF">Staff</option>
+												<option th:value="Etincelle">Etincelle</option>
+												<option th:value="Mentore">Mentor.e</option>
+												<option th:value="Coach">Coach</option>
+												<option th:value="Staff">Staff</option>
 											</select>
 										</div>
 										
@@ -134,8 +131,8 @@
 											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect1"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:selected="(${user.type.name()}=='CAREER')" th:value="CAREER">Carrière</option>
-												<option th:selected="(${user.type.name()}=='STARTUP')" th:value="STARTUP">Startup</option>
+												<option th:selected="(${user.type.name()}=='Carrière')" th:value="Carrière">Carrière</option>
+												<option th:selected="(${user.type.name()}=='Startup')" th:value="Startup">Startup</option>
 											</select>
 										</div>
 										
@@ -143,14 +140,14 @@
 											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:value="CAREER">Carrière</option>
-												<option th:value="STARTUP">Startup</option>
+												<option th:value="Carrière">Carrière</option>
+												<option th:value="Startup">Startup</option>
 											</select>
 										</div>
 										
 										<!-- Pour étincelles -->
 										<div class="form-group"
-											th:if="(${user.category != null and user.category.name() == 'ETINCELLE'})">
+											th:if="(${user.category != null and user.category.name() == 'Etincelle'})">
 											<label for="promo">* Promo</label><input type="number" required="required"
 												class="form-control" id="promo" name="promo"
 												th:value="${user.promo}" />
@@ -247,11 +244,11 @@
 	$(function () {
 		  $("#category").change(function() {
 		    var val = $(this).val();
-		    if(val === "ETINCELLE") {
+		    if(val === "Etincelle") {
 		        $("#typeDiv").show();
 		        $("#typeSelect").attr("required", "required");
 		    }
-		    else if(val === "MENTOR") {
+		    else if(val === "Mentore") {
 		        $("#typeDiv").show();
 		        $("#typeSelect").attr("required", "required");
 		    }		    

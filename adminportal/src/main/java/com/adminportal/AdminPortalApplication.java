@@ -28,7 +28,7 @@ public class AdminPortalApplication implements CommandLineRunner {
     public void run( String... args ) throws Exception {
         User user1 = new User();
         user1.setEmail( "admin@gmail.com" );
-        user1.setCategory( Category.STAFF );
+        user1.setCategory( Category.Staff );
         user1.setPassword( SecurityUtility.passwordEncoder().encode( "admin" ) );
         Set<UserRole> userRoles = new HashSet<>();
         Role role1 = new Role();

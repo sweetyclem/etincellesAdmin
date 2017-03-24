@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.adminportal.entities.security.Authority;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
+import com.adminportal.enumeration.City;
 import com.adminportal.enumeration.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,7 +40,8 @@ public class User implements UserDetails {
     private String            email;
     @Column( columnDefinition = "text" )
     private String            description;
-    private String            city;
+    @Enumerated( EnumType.STRING )
+    private City              city;
     @Transient
     private MultipartFile     picture;
     private String            password;
@@ -127,12 +129,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public boolean getEnabled() {
-        return enabled;
-    }
-
     public void setEnabled( boolean enabled ) {
         this.enabled = enabled;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
     }
 
     public String getFirstName() {
@@ -167,11 +169,11 @@ public class User implements UserDetails {
         this.description = description;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity( String city ) {
+    public void setCity( City city ) {
         this.city = city;
     }
 

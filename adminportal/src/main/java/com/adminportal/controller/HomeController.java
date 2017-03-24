@@ -75,12 +75,12 @@ public class HomeController {
         List<String> rejectedEmails = new ArrayList<>();
         List<String> emailExists = new ArrayList<>();
 
-        model.addAttribute( "coach", Category.COACH );
-        model.addAttribute( "etincelle", Category.ETINCELLE );
-        model.addAttribute( "staff", Category.STAFF );
-        model.addAttribute( "mentor", Category.MENTOR );
-        model.addAttribute( "career", Type.CAREER );
-        model.addAttribute( "startup", Type.STARTUP );
+        model.addAttribute( "coach", Category.Coach );
+        model.addAttribute( "etincelle", Category.Etincelle );
+        model.addAttribute( "staff", Category.Staff );
+        model.addAttribute( "mentor", Category.Mentore );
+        model.addAttribute( "career", Type.Carrière );
+        model.addAttribute( "startup", Type.Startup );
 
         for ( String email : emailList ) {
             if ( validate( email ) ) {
@@ -95,13 +95,13 @@ public class HomeController {
 
                     if ( request.getParameterMap().containsKey( "type" ) ) {
                         String type = request.getParameter( "type" );
-                        if ( type == Type.CAREER.name() ) {
-                            user.setType( Type.CAREER );
+                        if ( type == Type.Carrière.name() ) {
+                            user.setType( Type.Carrière );
                         } else
-                            user.setType( Type.STARTUP );
+                            user.setType( Type.Startup );
                     } else {
-                        if ( user.getCategory().equals( Category.ETINCELLE )
-                                || user.getCategory().equals( Category.MENTOR ) ) {
+                        if ( user.getCategory().equals( Category.Etincelle )
+                                || user.getCategory().equals( Category.Mentore ) ) {
                             model.addAttribute( "noType", "Merci de sélectionner un type (carrière ou startup)" );
                             return "addUsers";
                         }
@@ -234,8 +234,8 @@ public class HomeController {
         userList = userService.findAll();
 
         model.addAttribute( "userList", userList );
-        model.addAttribute( "career", Type.CAREER );
-        model.addAttribute( "startup", Type.STARTUP );
+        model.addAttribute( "career", Type.Carrière );
+        model.addAttribute( "startup", Type.Startup );
         return "directory";
     }
 
@@ -248,8 +248,8 @@ public class HomeController {
         userList = userService.findAll();
 
         model.addAttribute( "userList", userList );
-        model.addAttribute( "career", Type.CAREER );
-        model.addAttribute( "startup", Type.STARTUP );
+        model.addAttribute( "career", Type.Carrière );
+        model.addAttribute( "startup", Type.Startup );
         return "directory";
     }
 
@@ -262,8 +262,8 @@ public class HomeController {
         userList = userService.findAll();
 
         model.addAttribute( "userList", userList );
-        model.addAttribute( "career", Type.CAREER );
-        model.addAttribute( "startup", Type.STARTUP );
+        model.addAttribute( "career", Type.Carrière );
+        model.addAttribute( "startup", Type.Startup );
         return "directory";
     }
 
