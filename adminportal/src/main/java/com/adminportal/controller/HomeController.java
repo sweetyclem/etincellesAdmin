@@ -3,6 +3,7 @@ package com.adminportal.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -292,7 +293,7 @@ public class HomeController {
         return "updateMessage";
     }
 
-    @RequestMapping( value = "/updateMessagePost", method = RequestMethod.POST )
+    @RequestMapping( value = "/updateMessage", method = RequestMethod.POST )
     public String updateMessagePost( @ModelAttribute( "message" ) Message message, HttpServletRequest request,
             Model model )
             throws Exception {
@@ -329,5 +330,46 @@ public class HomeController {
         model.addAttribute( "classActiveEdit", true );
 
         return "updateMessage";
+    }
+
+    @RequestMapping( value = "/createMessage", method = RequestMethod.GET )
+    public String createMessage( Model model ) {
+        model.addAttribute( "classActiveEdit", true );
+        return "createMessage";
+    }
+
+    @RequestMapping( value = "/createMessage", method = RequestMethod.POST )
+    public String createMessagePost( @RequestParam( "title" ) String title, @RequestParam( "text" ) String text,
+            HttpServletRequest request,
+            Model model )
+            throws Exception {
+        Message message = new Message();
+
+        /*
+         * To do : save pictures inside Etincelles app
+         * 
+         * MultipartFile picture = message.getPicture(); if ( !(
+         * picture.isEmpty() ) ) { try { byte[] bytes = picture.getBytes();
+         * String name = message.getId() + ".png"; if ( Files.exists( Paths.get(
+         * "src/main/resources/static/images/message/" + name ) ) ) {
+         * Files.delete( Paths.get( "src/main/resources/static/images/message/"
+         * + name ) ); } BufferedOutputStream stream = new BufferedOutputStream(
+         * new FileOutputStream( new File(
+         * "src/main/resources/static/images/message/" + name ) ) );
+         * stream.write( bytes ); stream.close(); currentMessage.setHasPicture(
+         * true ); } catch ( Exception e ) { System.out.println(
+         * "Erreur ligne 152" ); e.printStackTrace(); } }
+         */
+
+        message.setTitle( title );
+        message.setDate( new Date() );
+        message.setText( text );
+
+        messageService.save( message );
+
+        model.addAttribute( "createSuccess", true );
+        model.addAttribute( "classActiveEdit", true );
+
+        return "redirect:/news";
     }
 }
