@@ -6,7 +6,7 @@
 	<groupId>com.adminportal</groupId>
 	<artifactId>adminportal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>AdminPortal</name>
 	<description>admin part for etincelles&#39; yearbook</description>

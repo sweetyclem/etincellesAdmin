@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import com.adminportal.entities.User;
 import com.adminportal.entities.security.Role;
@@ -16,9 +18,14 @@ import com.adminportal.service.UserService;
 import com.adminportal.utility.SecurityUtility;
 
 @SpringBootApplication
-public class AdminPortalApplication implements CommandLineRunner {
+public class AdminPortalApplication extends SpringBootServletInitializer implements CommandLineRunner {
     @Autowired
     private UserService userService;
+
+    @Override
+    protected SpringApplicationBuilder configure( SpringApplicationBuilder application ) {
+        return application.sources( AdminPortalApplication.class );
+    }
 
     public static void main( String[] args ) {
         SpringApplication.run( AdminPortalApplication.class, args );
