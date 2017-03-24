@@ -373,12 +373,8 @@ public class HomeController {
         return "redirect:/news";
     }
 
-    @RequestMapping( "/forgetPassword" )
-    public String forgetPassword(
-            HttpServletRequest request,
-            @RequestParam( "id" ) Long id,
-            Model model ) {
-
+    @RequestMapping( value = "/forgetPassword", method = RequestMethod.GET )
+    public String forgetPassword( @RequestParam( "id" ) Long id, Model model, HttpServletRequest request ) {
         User user = userService.findById( id );
 
         if ( user == null ) {

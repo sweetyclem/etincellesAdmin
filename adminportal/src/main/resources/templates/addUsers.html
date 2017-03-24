@@ -63,16 +63,16 @@
 											<textarea autofocus="autofocus" rows="10" cols="20" required="required"
 												type="email" class="form-control" name="email"></textarea>
 										</div>
-
+										
 										<div class="form-group">
 											<label for="category">* Catégorie</label> <select
 												id="category" required="required" name="category"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:value="${etincelle}">Etincelle</option>
-												<option th:value="${mentor}">Mentor.e</option>
-												<option th:value="${coach}">Coach</option>
-												<option th:value="${staff}">Staff</option>
+												<option th:value="Etincelle">Etincelle</option>
+												<option th:value="Mentore">Mentor.e</option>
+												<option th:value="Coach">Coach</option>
+												<option th:value="Staff">Staff</option>
 											</select>
 										</div>
 										
@@ -80,8 +80,8 @@
 											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
-												<option th:value="${career}">Carrière</option>
-												<option th:value="${startup}">Startup</option>
+												<option th:value="Carrière">Carrière</option>
+												<option th:value="Startup">Startup</option>
 											</select>
 										</div>
 
@@ -106,11 +106,11 @@
 	$(function () {
 		  $("#category").change(function() {
 		    var val = $(this).val();
-		    if(val === "ETINCELLE") {
+		    if(val === "Etincelle") {
 		        $("#type").show();
 		        $("#typeSelect").attr("required", "required");
 		    }
-		    else if(val === "MENTOR") {
+		    else if(val === "Mentore") {
 		        $("#type").show();
 		        $("#typeSelect").attr("required", "required");
 		    }		    

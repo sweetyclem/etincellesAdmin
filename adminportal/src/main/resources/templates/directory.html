@@ -10,17 +10,17 @@
 	<main class="container">
 
 	<div class="table-responsive">
-	<div class="alert alert-danger" th:if="${emailNotSent}">
-				<strong>Email non envoyé</strong>
+		<div class="alert alert-danger" th:if="${emailNotSent}">
+			<strong>Email non envoyé</strong>
 		</div>
 		<div class="alert alert-success" th:if="${emailSent}">
-				<strong>Email envoyé</strong>
+			<strong>Email envoyé</strong>
 		</div>
 		<table id="usersTable"
 			class="table table-bordered table-hover table-striped">
 			<thead>
 				<tr>
-					<th></th>					
+					<th></th>
 					<th>Prénom</th>
 					<th>Nom</th>
 					<th>Categorie</th>
@@ -42,9 +42,9 @@
 			</thead>
 			<tbody>
 				<tr data-th-each="user : ${userList}">
-				<input hidden="hidden" name="id" th:value="${user.id}"/>
+					<input hidden="hidden" name="id" th:value="${user.id}" />
 					<td><a th:href="@{/updateUser(id=${user.id})}"><span
-							th:text="Modifier"></span></a></td>					
+							th:text="Modifier"></span></a></td>
 					<td th:text="${user.firstName}"></td>
 					<td th:text="${user.lastName}"></td>
 					<td th:text="${user.category}"></td>
@@ -62,14 +62,14 @@
 					<td th:text="${user.twitter}"></td>
 					<td th:text="${user.facebook}"></td>
 					<td th:text="${user.linkedin}"></td>
-					<td th:if="${user.enabled}"><a th:href="@{/deleteUser(id=${user.id})}"><span
+					<td th:if="${user.enabled}"><a
+						th:href="@{/deleteUser(id=${user.id})}"><span
 							th:text="Désactiver"></span></a></td>
-					<td th:if="${!user.enabled}"><a th:href="@{/activateUser(id=${user.id})}"><span
+					<td th:if="${!user.enabled}"><a
+						th:href="@{/activateUser(id=${user.id})}"><span
 							th:text="Activer"></span></a></td>
 					<td>
-						<input hidden="hidden" name="id" th:value="${user.id}"/>
-						<button th:id="${user.id}" class="btn btn-danger btn-xs forgetPass" type="submit" value="forgotten" >
-						<span class="fa fa-times"></span>Renvoyer</button>
+						<a class="no-under" onclick="return confirm('Générer un nouveau mot de passe ?');" id="forgetPass" th:href="@{/forgetPassword(id=${user.id})}">Renvoyer</a>
 					</td>
 				</tr>
 			</tbody>
@@ -78,6 +78,7 @@
 
 	</main>
 	<div th:replace="common/header :: body-bottom-scripts"></div>
+	<!-- <script th:src="@{/js/scripts.js}"></script> -->
 	<script type="text/javascript">
 		$(document).ready(
 				function() {
@@ -91,32 +92,6 @@
 								responsive : true,
 								buttons : [ 'copy', 'excel', 'pdf' ]
 							});
-					$('.forgetPass').on('click', function (){
-						/*<![CDATA[*/
-					    var path = /*[[@{/}]]*/'forgetPassword';
-					    /*]]>*/
-						
-						var id=$(this).attr('id');
-						
-						bootbox.confirm({
-							message: "Générer un nouveau mot de passe ?",
-							buttons: {
-								cancel: {
-									label:'<i class="fa fa-times"></i> Annuler'
-								},
-								confirm: {
-									label:'<i class="fa fa-check"></i> Confirmer'
-								}
-							},
-							callback: function(confirmed) {
-								if(confirmed) {
-									$.post(path, {'id':id}, function(res) {
-										location.reload();
-									});
-								}
-							}
-						});
-					});
 				});
 	</script>
 </body>
