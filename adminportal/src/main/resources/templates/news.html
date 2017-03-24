@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header">
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<div th:replace="common/header :: navbar"></div>
+
+	<main class="container">
+
+	<div class="table-responsive">
+		<table id="messagesTable"
+			class="table table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Date</th>
+					<th>Titre</th>
+					<th>Texte</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-th-each="message : ${messageList}">
+					<td><a th:href="@{/updateMessage(id=${message.id})}"><span
+							th:text="Modifier"></span></a></td>
+					<td th:utext="${#dates.format(message.date,'dd MMM yyyy')}"></td>
+					<td th:text="${message.title}"></td>
+					<td class="text-justify" th:utext="${#strings.abbreviate(message.text, 200)}"></td>
+					<td>
+						<input hidden="hidden" name="id" th:value="${message.id}"/>
+						<button th:id="${message.id}" class="btn btn-danger btn-xs delete-message" type="submit" value="delete" >
+						<span class="fa fa-times"></span>Supprimer</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	</main>
+	<div th:replace="common/header :: body-bottom-scripts"></div>
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					$("#messagesTable").DataTable(
+							{
+								"lengthMenu" : [ [ 5, 10, 15, 20, -1 ],
+										[ 5, 10, 15, 20, "All" ] ],
+								"ordering" : true,
+								stateSave : true,
+								colReorder : true,
+								responsive : true,
+								buttons : [ 'copy', 'excel', 'pdf' ]
+							});
+					$('.delete-message').on('click', function (){
+						/*<![CDATA[*/
+					    var path = /*[[@{/}]]*/'remove';
+					    /*]]>*/
+						
+						var id=$(this).attr('id');
+						
+						bootbox.confirm({
+							message: "Supprimer l'article ?",
+							buttons: {
+								cancel: {
+									label:'<i class="fa fa-times"></i> Annuler'
+								},
+								confirm: {
+									label:'<i class="fa fa-check"></i> Confirmer'
+								}
+							},
+							callback: function(confirmed) {
+								if(confirmed) {
+									$.post(path, {'id':id}, function(res) {
+										location.reload();
+									});
+								}
+							}
+						});
+					});
+				});
+	</script>
+</body>
+</html>

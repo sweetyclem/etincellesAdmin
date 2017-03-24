@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.adminportal.entities.Message;
 import com.adminportal.entities.User;
 import com.adminportal.entities.security.Role;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.Type;
+import com.adminportal.service.MessageService;
 import com.adminportal.service.UserService;
 import com.adminportal.utility.MailConstructor;
 import com.adminportal.utility.SecurityUtility;
@@ -44,6 +46,9 @@ public class HomeController {
 
     @Autowired
     private UserService         userService;
+
+    @Autowired
+    private MessageService      messageService;
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
             .compile( "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE );
@@ -74,13 +79,6 @@ public class HomeController {
         List<String> emailList = Arrays.asList( emails.split( "\\r\\n|\\n|\\r" ) );
         List<String> rejectedEmails = new ArrayList<>();
         List<String> emailExists = new ArrayList<>();
-
-        model.addAttribute( "coach", Category.Coach );
-        model.addAttribute( "etincelle", Category.Etincelle );
-        model.addAttribute( "staff", Category.Staff );
-        model.addAttribute( "mentor", Category.Mentore );
-        model.addAttribute( "career", Type.Carrière );
-        model.addAttribute( "startup", Type.Startup );
 
         for ( String email : emailList ) {
             if ( validate( email ) ) {
@@ -232,10 +230,7 @@ public class HomeController {
     public String directory( Model model ) {
         List<User> userList;
         userList = userService.findAll();
-
         model.addAttribute( "userList", userList );
-        model.addAttribute( "career", Type.Carrière );
-        model.addAttribute( "startup", Type.Startup );
         return "directory";
     }
 
@@ -248,8 +243,6 @@ public class HomeController {
         userList = userService.findAll();
 
         model.addAttribute( "userList", userList );
-        model.addAttribute( "career", Type.Carrière );
-        model.addAttribute( "startup", Type.Startup );
         return "directory";
     }
 
@@ -262,8 +255,6 @@ public class HomeController {
         userList = userService.findAll();
 
         model.addAttribute( "userList", userList );
-        model.addAttribute( "career", Type.Carrière );
-        model.addAttribute( "startup", Type.Startup );
         return "directory";
     }
 
@@ -273,5 +264,22 @@ public class HomeController {
         model.addAttribute( "user", user );
         model.addAttribute( "classActiveNewAccount", true );
         return "addUsers";
+    }
+
+    @RequestMapping( "/news" )
+    public String news( Model model ) {
+        List<Message> messages = messageService.findAll();
+        model.addAttribute( "messageList", messages );
+        return "news";
+    }
+
+    @RequestMapping( value = "/remove", method = RequestMethod.POST )
+    public String remove(
+            @ModelAttribute( "id" ) Long id, Model model ) {
+        messageService.removeOne( id );
+        List<Message> messageList = messageService.findAll();
+        model.addAttribute( "messageList", messageList );
+
+        return "redirect:/news";
     }
 }
