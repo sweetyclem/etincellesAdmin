@@ -372,4 +372,39 @@ public class HomeController {
 
         return "redirect:/news";
     }
+
+    @RequestMapping( "/forgetPassword" )
+    public String forgetPassword(
+            HttpServletRequest request,
+            @RequestParam( "id" ) Long id,
+            Model model ) {
+
+        User user = userService.findById( id );
+
+        if ( user == null ) {
+            model.addAttribute( "emailNotSent", true );
+            return "redirect:/directory";
+        }
+
+        String password = SecurityUtility.randomPassword();
+
+        String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
+        user.setPassword( encryptedPassword );
+
+        userService.save( user );
+
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetTokenForUser( user, token );
+
+        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+
+        SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail( appUrl, request.getLocale(), token, user,
+                password );
+
+        mailSender.send( newEmail );
+
+        model.addAttribute( "emailSent", "true" );
+
+        return "redirect:/directory";
+    }
 }
