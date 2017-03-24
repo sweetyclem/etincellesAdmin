@@ -282,4 +282,52 @@ public class HomeController {
 
         return "redirect:/news";
     }
+
+    @RequestMapping( value = "/updateMessage", method = RequestMethod.GET )
+    public String updateMessage( Model model, @RequestParam( "id" ) Long id ) {
+        Message message = messageService.findById( id );
+
+        model.addAttribute( "classActiveEdit", true );
+        model.addAttribute( "message", message );
+        return "updateMessage";
+    }
+
+    @RequestMapping( value = "/updateMessagePost", method = RequestMethod.POST )
+    public String updateMessagePost( @ModelAttribute( "message" ) Message message, HttpServletRequest request,
+            Model model )
+            throws Exception {
+
+        Message currentMessage = messageService.findById( message.getId() );
+        if ( currentMessage == null ) {
+            throw new Exception( "Message not found" );
+        }
+
+        /*
+         * To do : save pictures inside Etincelles app
+         * 
+         * MultipartFile picture = message.getPicture(); if ( !(
+         * picture.isEmpty() ) ) { try { byte[] bytes = picture.getBytes();
+         * String name = message.getId() + ".png"; if ( Files.exists( Paths.get(
+         * "src/main/resources/static/images/message/" + name ) ) ) {
+         * Files.delete( Paths.get( "src/main/resources/static/images/message/"
+         * + name ) ); } BufferedOutputStream stream = new BufferedOutputStream(
+         * new FileOutputStream( new File(
+         * "src/main/resources/static/images/message/" + name ) ) );
+         * stream.write( bytes ); stream.close(); currentMessage.setHasPicture(
+         * true ); } catch ( Exception e ) { System.out.println(
+         * "Erreur ligne 152" ); e.printStackTrace(); } }
+         */
+
+        currentMessage.setTitle( message.getTitle() );
+        // currentMessage.setDate( message.getDate() );
+        currentMessage.setText( message.getText() );
+
+        messageService.save( currentMessage );
+
+        model.addAttribute( "updateSuccess", true );
+        model.addAttribute( "message", currentMessage );
+        model.addAttribute( "classActiveEdit", true );
+
+        return "updateMessage";
+    }
 }

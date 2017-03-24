@@ -14,4 +14,6 @@ public interface MessageService {
     List<Message> findAll();
 
     void removeOne( Long id );
+
+    Message save( Message message );
 }

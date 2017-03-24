@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -23,6 +24,7 @@ public class Message {
     @Transient
     private MultipartFile picture;
     private boolean       hasPicture = false;
+    @DateTimeFormat( pattern = "dd-MM-yyyy" )
     private Date          date;
 
     public Date getDate() {
