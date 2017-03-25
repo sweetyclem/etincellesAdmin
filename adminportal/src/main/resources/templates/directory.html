@@ -23,27 +23,29 @@
 					<th></th>
 					<th>Prénom</th>
 					<th>Nom</th>
-					<th>Categorie</th>
-					<th>Type</th>
+					<th></th>
+					<th></th>
 					<th>Promo</th>
-					<th>Ville</th>
-					<th>Email</th>
-					<th>Téléphone</th>
+					<th></th>
+					<th></th>
+					<th></th>
 					<th>Entreprise</th>
 					<th>Poste</th>
 					<th>Description</th>
-					<th>Photo</th>
-					<th>Twitter</th>
-					<th>Facebook</th>
-					<th>Linkedin</th>
-					<th>Désactiver</th>
-					<th>Renvoyer l'email</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr data-th-each="user : ${userList}">
 					<input hidden="hidden" name="id" th:value="${user.id}" />
-					<td><a th:href="@{/updateUser(id=${user.id})}"><span
+					<td><a style="color: white;" role="button"
+						class="btn-primary btn btn-xs no-under"
+						th:href="@{/updateUser(id=${user.id})}"><span
 							th:text="Modifier"></span></a></td>
 					<td th:text="${user.firstName}"></td>
 					<td th:text="${user.lastName}"></td>
@@ -56,21 +58,38 @@
 					<td th:text="${user.organization}"></td>
 					<td th:text="${user.job_title}"></td>
 					<td th:utext="${#strings.abbreviate(user.description, 50)}"></td>
-					<td><img style="width: 100px" th:if="${user.hasPicture}"
-						th:src="${'http://localhost:8082/images/user/'+user.id+'.png'}"
-						class="img-responsive center-block" /></td>
-					<td th:text="${user.twitter}"></td>
-					<td th:text="${user.facebook}"></td>
-					<td th:text="${user.linkedin}"></td>
-					<td th:if="${user.enabled}"><a
+					<td style="width: 100px"><img style="width: 100px" th:if="${user.hasPicture}"
+						th:src="${'https://etincelles.herokuapp.com//images/user/'+user.id+'.png'}"
+						class="img-responsive center-block" />
+					</td>			
+					<td><a th:if="${user.twitter}" target="_blank" class="btn btn-twitter btn-sm"
+						th:href="@{https://twitter.com/} + ${user.twitter}"><i
+						class="fa fa-twitter"></i></a>
+					</td>
+					<td><a th:if="${user.facebook}" target="_blank" class="btn btn-facebook btn-sm" rel="publisher"
+						th:href="@{https://facebook.com/public/} + ${user.facebook}">
+						<i class="fa fa-facebook"></i>
+					</a>
+					</td>
+					<td><a th:if="${user.linkedin}" target="_blank" class="btn btn-linkedin btn-sm" rel="publisher"
+						th:href="@{https://linkedin.com/in/} + ${user.linkedin}"> <i
+						class="fa fa-linkedin"></i>
+					</a>
+					</td>
+					<td th:if="${user.enabled}"><a style="color: white;"
+						role="button" class="btn-danger btn btn-xs no-under"
 						th:href="@{/deleteUser(id=${user.id})}"><span
 							th:text="Désactiver"></span></a></td>
-					<td th:if="${!user.enabled}"><a
+					<td th:if="${!user.enabled}"><a style="color: white;"
+						role="button" class="btn-info btn btn-xs no-under"
 						th:href="@{/activateUser(id=${user.id})}"><span
 							th:text="Activer"></span></a></td>
-					<td>
-						<a class="no-under" onclick="return confirm('Générer un nouveau mot de passe ?');" id="forgetPass" th:href="@{/forgetPassword(id=${user.id})}">Renvoyer</a>
-					</td>
+					<td><a
+						onclick="return confirm('Générer un nouveau mot de passe ?');"
+						id="forgetPass" style="color: white;" role="button"
+						class="btn-warning btn btn-xs no-under"
+						th:href="@{/forgetPassword(id=${user.id})}"><span
+							th:text="Renvoyer"></span></a></td>
 				</tr>
 			</tbody>
 		</table>

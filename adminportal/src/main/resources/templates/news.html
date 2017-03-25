@@ -25,15 +25,23 @@
 					<th>Titre</th>
 					<th>Texte</th>
 					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr data-th-each="message : ${messageList}">
-					<td><a th:href="@{/updateMessage(id=${message.id})}"><span
-							th:text="Modifier"></span></a></td>
+					<td>
+					<a style="color: white;" role="button" class="btn-primary btn btn-xs no-under" th:href="@{/updateMessage(id=${message.id})}"><span
+							th:text="Modifier"></span></a>
+					</td>
 					<td th:utext="${#dates.format(message.date,'dd MMM yyyy')}"></td>
 					<td th:text="${message.title}"></td>
 					<td class="text-justify" th:utext="${#strings.abbreviate(message.text, 200)}"></td>
+					<td  style="width: 100px;"><img
+						style="width: 100px; height: 100px" class="img-responsive"
+						th:if="${message.hasPicture}"
+						th:src="@{'/images/message/'+ ${message.id} +'.png'}" /></td>
+					
 					<td>
 						<input hidden="hidden" name="id" th:value="${message.id}"/>
 						<button th:id="${message.id}" class="btn btn-danger btn-xs delete-message" type="submit" value="delete" >
