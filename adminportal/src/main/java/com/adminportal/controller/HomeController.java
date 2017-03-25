@@ -1,5 +1,10 @@
 package com.adminportal.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.adminportal.entities.Message;
 import com.adminportal.entities.User;
@@ -303,21 +309,29 @@ public class HomeController {
             throw new Exception( "Message not found" );
         }
 
-        /*
-         * To do : save pictures inside Etincelles app
-         * 
-         * MultipartFile picture = message.getPicture(); if ( !(
-         * picture.isEmpty() ) ) { try { byte[] bytes = picture.getBytes();
-         * String name = message.getId() + ".png"; if ( Files.exists( Paths.get(
-         * "src/main/resources/static/images/message/" + name ) ) ) {
-         * Files.delete( Paths.get( "src/main/resources/static/images/message/"
-         * + name ) ); } BufferedOutputStream stream = new BufferedOutputStream(
-         * new FileOutputStream( new File(
-         * "src/main/resources/static/images/message/" + name ) ) );
-         * stream.write( bytes ); stream.close(); currentMessage.setHasPicture(
-         * true ); } catch ( Exception e ) { System.out.println(
-         * "Erreur ligne 152" ); e.printStackTrace(); } }
-         */
+        MultipartFile picture = message.getPicture();
+        if ( !( picture.isEmpty() ) ) {
+            try {
+                byte[] bytes = picture.getBytes();
+                String name = message.getId() + ".png";
+                if ( Files.exists( Paths.get(
+                        "src/main/resources/static/images/message/" + name ) ) ) {
+                    Files.delete( Paths.get( "src/main/resources/static/images/message/"
+                            + name ) );
+                }
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream( new File(
+                                "src/main/resources/static/images/message/" + name ) ) );
+                stream.write( bytes );
+                stream.close();
+                currentMessage.setHasPicture(
+                        true );
+            } catch ( Exception e ) {
+                System.out.println(
+                        "Erreur ligne 331 sauvegarde de l'image" );
+                e.printStackTrace();
+            }
+        }
 
         currentMessage.setTitle( message.getTitle() );
         // currentMessage.setDate( message.getDate() );
@@ -339,31 +353,38 @@ public class HomeController {
     }
 
     @RequestMapping( value = "/createMessage", method = RequestMethod.POST )
-    public String createMessagePost( @RequestParam( "title" ) String title, @RequestParam( "text" ) String text,
+    public String createMessagePost( @ModelAttribute( "message" ) Message message,
             HttpServletRequest request,
             Model model )
             throws Exception {
-        Message message = new Message();
+        messageService.save( message );
 
-        /*
-         * To do : save pictures inside Etincelles app
-         * 
-         * MultipartFile picture = message.getPicture(); if ( !(
-         * picture.isEmpty() ) ) { try { byte[] bytes = picture.getBytes();
-         * String name = message.getId() + ".png"; if ( Files.exists( Paths.get(
-         * "src/main/resources/static/images/message/" + name ) ) ) {
-         * Files.delete( Paths.get( "src/main/resources/static/images/message/"
-         * + name ) ); } BufferedOutputStream stream = new BufferedOutputStream(
-         * new FileOutputStream( new File(
-         * "src/main/resources/static/images/message/" + name ) ) );
-         * stream.write( bytes ); stream.close(); currentMessage.setHasPicture(
-         * true ); } catch ( Exception e ) { System.out.println(
-         * "Erreur ligne 152" ); e.printStackTrace(); } }
-         */
+        MultipartFile picture = message.getPicture();
+        if ( !( picture.isEmpty() ) ) {
+            try {
+                byte[] bytes = picture.getBytes();
+                String name = message.getId() + ".png";
+                if ( Files.exists( Paths.get(
+                        "src/main/resources/static/images/message/" + name ) ) ) {
+                    Files.delete( Paths.get( "src/main/resources/static/images/message/"
+                            + name ) );
+                }
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream( new File(
+                                "src/main/resources/static/images/message/" + name ) ) );
+                stream.write( bytes );
+                stream.close();
+                message.setHasPicture( true );
+            } catch ( Exception e ) {
+                System.out.println(
+                        "Erreur ligne 381 sauvegarde de l'image" );
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println( "picture is empty" );
+        }
 
-        message.setTitle( title );
         message.setDate( new Date() );
-        message.setText( text );
 
         messageService.save( message );
 

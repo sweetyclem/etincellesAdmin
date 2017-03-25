@@ -56,8 +56,8 @@
 					<td th:text="${user.organization}"></td>
 					<td th:text="${user.job_title}"></td>
 					<td th:utext="${#strings.abbreviate(user.description, 50)}"></td>
-					<td><img th:if="${user.hasPicture}"
-						th:src="@{'/images/user/' + ${user.id} +'.png'}"
+					<td><img style="width: 100px" th:if="${user.hasPicture}"
+						th:src="${'http://localhost:8082/images/user/'+user.id+'.png'}"
 						class="img-responsive center-block" /></td>
 					<td th:text="${user.twitter}"></td>
 					<td th:text="${user.facebook}"></td>
