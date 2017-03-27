@@ -61,7 +61,7 @@ public class User implements UserDetails {
     @Enumerated( EnumType.STRING )
     private Type              type;
 
-    @OneToMany( mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     @JsonIgnore
     private Set<UserRole>     userRoles        = new HashSet<>();
 

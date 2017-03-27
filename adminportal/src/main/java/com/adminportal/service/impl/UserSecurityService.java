@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.adminportal.entities.User;
+import com.adminportal.entities.security.UserRole;
 import com.adminportal.repository.UserRepository;
 
 @Service
@@ -20,9 +21,51 @@ public class UserSecurityService implements UserDetailsService {
         User user = userRepository.findByEmail( username );
 
         if ( null == user ) {
-            throw new UsernameNotFoundException( "Email not found" );
+            throw new UsernameNotFoundException( "Username not found" );
+        }
+
+        if ( user.getUserRoles().isEmpty() ) {
+            System.out.println( "userRoles is empty" );
+        }
+
+        for ( UserRole userRole : user.getUserRoles() ) {
+            System.out.println( userRole.getRole().getName() );
         }
 
         return user;
     }
+
+    // @Override
+    // public UserDetails loadUserByUsername( String username ) throws
+    // UsernameNotFoundException {
+    // User user = userRepository.findByEmail( username );
+    //
+    // if ( null == user ) {
+    // throw new UsernameNotFoundException( "Email not found" );
+    // }
+    //
+    // List<String> roles = new ArrayList<>();
+    //
+    // if ( user.getUserRoles().isEmpty() ) {
+    // System.out.println( "userRoles is empty" );
+    // }
+    //
+    // for ( UserRole userRole : user.getUserRoles() ) {
+    // System.out.println( userRole.getRole().getName() );
+    // roles.add( userRole.getRole().getName() );
+    // }
+    //
+    // return new org.springframework.security.core.userdetails.User(
+    // user.getEmail(), user.getPassword(), user.getEnabled(), true, true,
+    // true, getGrantedAuthorities( roles ) );
+    // }
+    //
+    // private List<GrantedAuthority> getGrantedAuthorities( List<String> roles
+    // ) {
+    // List<GrantedAuthority> authorities = new ArrayList<>();
+    // for ( String role : roles ) {
+    // authorities.add( new SimpleGrantedAuthority( role ) );
+    // }
+    // return authorities;
+    // }
 }

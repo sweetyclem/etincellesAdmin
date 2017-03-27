@@ -11,8 +11,10 @@
 
 		<div class="row">
 			<div class="col-xs-4 col-md-offset-4">
+				<div class="bg-danger" th:if="${accessDenied}">Vous n'avez pas les droits pour vous connecter</div>
 				<div class="bg-danger" th:if="${param.error}">Informations invalides</div>
 				<div class="bg-danger" th:if="${param.logout}">Vous avez été déconnecté.e.</div>
+				<br/>
 				<form class="form-signin" th:action="@{/login}" method="post">
 					<h2 class="form-signin-heading">S'identifier</h2>
 					<div class="form-group">

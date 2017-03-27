@@ -424,4 +424,104 @@ public class HomeController {
 
         return "redirect:/directory";
     }
+
+    @RequestMapping( "/addAdmin" )
+    public String addAdmin() {
+        return "redirect:/addUsers";
+    }
+
+    @RequestMapping( value = "/addAdmin", method = RequestMethod.POST )
+    public String newAdminPost( HttpServletRequest request, @ModelAttribute( "email" ) String emails,
+            @RequestParam( value = "category" ) Category category, Model model ) throws Exception {
+        model.addAttribute( "classActiveNewAdmin", true );
+        List<String> emailList = Arrays.asList( emails.split( "\\r\\n|\\n|\\r" ) );
+        List<String> rejectedEmails = new ArrayList<>();
+        List<String> emailExists = new ArrayList<>();
+        List<String> roleAdded = new ArrayList<>();
+
+        for ( String email : emailList ) {
+            if ( validate( email ) ) {
+                if ( userService.findByEmail( email ) == null ) {
+                    User user = new User();
+                    user.setEmail( email );
+                    user.setCategory( category );
+
+                    System.out.println( "User email : " + email );
+                    System.out.println( "Category param : " + category );
+                    System.out.println( "User category : " + user.getCategory() );
+
+                    if ( request.getParameterMap().containsKey( "type" ) ) {
+                        String type = request.getParameter( "type" );
+                        if ( type == Type.Carrière.name() ) {
+                            user.setType( Type.Carrière );
+                        } else
+                            user.setType( Type.Startup );
+                    } else {
+                        if ( user.getCategory().equals( Category.Etincelle )
+                                || user.getCategory().equals( Category.Mentore ) ) {
+                            model.addAttribute( "noType", "Merci de sélectionner un type (carrière ou startup)" );
+                            return "addUsers";
+                        }
+                    }
+
+                    String password = SecurityUtility.randomPassword();
+
+                    String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
+                    user.setPassword( encryptedPassword );
+
+                    Role role = new Role();
+                    // RoleRepository roleRepository = new RoleRepository();
+                    role.setName( "ROLE_ADMIN" );
+
+                    Set<UserRole> userRoles = new HashSet<>();
+                    userRoles.add( new UserRole( user, role ) );
+                    userService.createUser( user, userRoles );
+
+                    String token = UUID.randomUUID().toString();
+                    userService.createPasswordResetTokenForUser( user, token );
+
+                    String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort()
+                            + request.getContextPath();
+
+                    SimpleMailMessage mail = mailConstructor.constructResetTokenEmail( appUrl, request.getLocale(),
+                            token,
+                            user,
+                            password );
+
+                    mailSender.send( mail );
+                    model.addAttribute( "emailSent", "true" );
+                } else {
+                    User user = new User();
+                    user = userService.findByEmail( email );
+                    Role role = new Role();
+                    role.setRoleId( 0 );
+                    role.setName( "ROLE_ADMIN" );
+                    Set<UserRole> userRoles = user.getUserRoles();
+                    userRoles.add( new UserRole( user, role ) );
+                    emailExists.add( email );
+                    roleAdded.add( email );
+                }
+            } else {
+                rejectedEmails.add( email );
+            }
+        }
+
+        if ( !( rejectedEmails.isEmpty() ) )
+
+        {
+            model.addAttribute( "rejectedEmails", rejectedEmails );
+        }
+
+        if ( !( emailExists.isEmpty() ) ) {
+            model.addAttribute( "emailExists", emailExists );
+        }
+        return "addUsers";
+    }
+
+    @RequestMapping( "/accessDenied" )
+    public String AccessDenied( Model model ) {
+        model.addAttribute( "accessDenied", true );
+        return "redirect:/login";
+    }
+
 }
