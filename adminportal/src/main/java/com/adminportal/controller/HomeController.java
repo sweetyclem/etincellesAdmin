@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.adminportal.entities.Message;
 import com.adminportal.entities.User;
@@ -38,6 +39,7 @@ import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.Type;
 import com.adminportal.service.MessageService;
+import com.adminportal.service.RoleService;
 import com.adminportal.service.UserService;
 import com.adminportal.utility.MailConstructor;
 import com.adminportal.utility.SecurityUtility;
@@ -57,6 +59,9 @@ public class HomeController {
     @Autowired
     private MessageService      messageService;
 
+    @Autowired
+    private RoleService         roleService;
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
             .compile( "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE );
 
@@ -71,7 +76,12 @@ public class HomeController {
     }
 
     @RequestMapping( "/login" )
-    public String login( Model model ) {
+    public String login( Model model, HttpServletRequest request ) {
+        if ( request.getParameterMap().containsKey( "accessDenied" ) ) {
+            if ( request.getParameter( "accessDenied" ) != null ) {
+                model.addAttribute( "accessDenied", true );
+            }
+        }
         model.addAttribute( "classActiveLogin", true );
         return "login";
     }
@@ -449,30 +459,12 @@ public class HomeController {
                     System.out.println( "User email : " + email );
                     System.out.println( "Category param : " + category );
                     System.out.println( "User category : " + user.getCategory() );
-
-                    if ( request.getParameterMap().containsKey( "type" ) ) {
-                        String type = request.getParameter( "type" );
-                        if ( type == Type.Carrière.name() ) {
-                            user.setType( Type.Carrière );
-                        } else
-                            user.setType( Type.Startup );
-                    } else {
-                        if ( user.getCategory().equals( Category.Etincelle )
-                                || user.getCategory().equals( Category.Mentore ) ) {
-                            model.addAttribute( "noType", "Merci de sélectionner un type (carrière ou startup)" );
-                            return "addUsers";
-                        }
-                    }
-
                     String password = SecurityUtility.randomPassword();
 
                     String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
                     user.setPassword( encryptedPassword );
 
-                    Role role = new Role();
-                    // RoleRepository roleRepository = new RoleRepository();
-                    role.setName( "ROLE_ADMIN" );
-
+                    Role role = roleService.findByname( "ROLE_ADMIN" );
                     Set<UserRole> userRoles = new HashSet<>();
                     userRoles.add( new UserRole( user, role ) );
                     userService.createUser( user, userRoles );
@@ -484,20 +476,15 @@ public class HomeController {
                             + request.getContextPath();
 
                     SimpleMailMessage mail = mailConstructor.constructResetTokenEmail( appUrl, request.getLocale(),
-                            token,
-                            user,
-                            password );
-
+                            token, user, password );
                     mailSender.send( mail );
                     model.addAttribute( "emailSent", "true" );
                 } else {
-                    User user = new User();
-                    user = userService.findByEmail( email );
-                    Role role = new Role();
-                    role.setRoleId( 0 );
-                    role.setName( "ROLE_ADMIN" );
+                    User user = userService.findByEmail( email );
+                    Role role = roleService.findByname( "ROLE_ADMIN" );
                     Set<UserRole> userRoles = user.getUserRoles();
                     userRoles.add( new UserRole( user, role ) );
+                    userService.save( user );
                     emailExists.add( email );
                     roleAdded.add( email );
                 }
@@ -515,12 +502,17 @@ public class HomeController {
         if ( !( emailExists.isEmpty() ) ) {
             model.addAttribute( "emailExists", emailExists );
         }
+
+        if ( !( roleAdded.isEmpty() ) ) {
+            model.addAttribute( "roleAdded", roleAdded );
+        }
+
         return "addUsers";
     }
 
     @RequestMapping( "/accessDenied" )
-    public String AccessDenied( Model model ) {
-        model.addAttribute( "accessDenied", true );
+    public String AccessDenied( RedirectAttributes redirectAttributes ) {
+        redirectAttributes.addAttribute( "accessDenied", true );
         return "redirect:/login";
     }
 
