@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header">
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<div th:replace="common/header :: navbar"></div>
+
+	<main class="container">
+
+	<div class="table-responsive">
+		<div class="alert alert-danger" th:if="${emailNotSent}">
+			<strong>Email non envoyé</strong>
+		</div>
+		<div class="alert alert-success" th:if="${emailSent}">
+			<strong>Email envoyé</strong>
+		</div>
+		<table id="usersTable"
+			class="table table-bordered table-hover table-striped">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Prénom</th>
+					<th>Nom</th>
+					<th></th>
+					<th></th>
+					<th>Promo</th>
+					<th></th>
+					<th></th>
+					<th>Description</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-th-each="user : ${userList}">
+					<input hidden="hidden" name="id" th:value="${user.id}" />
+					<td><a style="color: white;" role="button"
+						class="btn-primary btn btn-xs no-under"
+						th:href="@{/updateUser(id=${user.id})}"><span
+							th:text="Modifier"></span></a></td>
+					<td th:text="${user.firstName}"></td>
+					<td th:text="${user.lastName}"></td>
+					<td th:text="${user.category}"></td>
+					<td th:text="${user.type}"></td>
+					<td th:text="${user.promo}"></td>
+					<td th:text="${user.city}"></td>
+					<td th:text="${user.email}"></td>
+					<td th:utext="${#strings.abbreviate(user.description, 50)}"></td>
+					<td style="width: 100px"><img style="width: 100px" th:if="${user.hasPicture}"
+						th:src="${'https://etincelles.herokuapp.com//images/user/'+user.id+'.png'}"
+						class="img-responsive center-block" />
+					</td>			
+					<td><a th:if="${user.twitter}" target="_blank" class="btn btn-twitter btn-sm"
+						th:href="@{https://twitter.com/} + ${user.twitter}"><i
+						class="fa fa-twitter"></i></a>
+					</td>
+					<td><a th:if="${user.facebook}" target="_blank" class="btn btn-facebook btn-sm" rel="publisher"
+						th:href="@{https://facebook.com/public/} + ${user.facebook}">
+						<i class="fa fa-facebook"></i>
+					</a>
+					</td>
+					<td><a th:if="${user.linkedin}" target="_blank" class="btn btn-linkedin btn-sm" rel="publisher"
+						th:href="@{https://linkedin.com/in/} + ${user.linkedin}"> <i
+						class="fa fa-linkedin"></i>
+					</a>
+					</td>
+					<td th:if="${user.enabled}"><a style="color: white;"
+						role="button" class="btn-danger btn btn-xs no-under"
+						th:href="@{/deleteUser(id=${user.id})}"><span
+							th:text="Désactiver"></span></a></td>
+					<td th:if="${!user.enabled}"><a style="color: white;"
+						role="button" class="btn-info btn btn-xs no-under"
+						th:href="@{/activateUser(id=${user.id})}"><span
+							th:text="Activer"></span></a></td>
+					<td><a
+						onclick="return confirm('Générer un nouveau mot de passe ?');"
+						id="forgetPass" style="color: white;" role="button"
+						class="btn-warning btn btn-xs no-under"
+						th:href="@{/forgetPassword(id=${user.id})}"><span
+							th:text="Renvoyer"></span></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	</main>
+	<div th:replace="common/header :: body-bottom-scripts"></div>
+	<!-- <script th:src="@{/js/scripts.js}"></script> -->
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					$("#usersTable").DataTable(
+							{
+								"lengthMenu" : [ [ 5, 10, 15, 20, -1 ],
+										[ 5, 10, 15, 20, "All" ] ],
+								"ordering" : true,
+								stateSave : true,
+								colReorder : true,
+								responsive : true,
+								buttons : [ 'copy', 'excel', 'pdf' ]
+							});
+				});
+	</script>
+</body>
+</html>

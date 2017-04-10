@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header">
+<meta charset="utf-8" />
+</head>
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-8">
+				<h2 class="section-headline">
+					<h2 class="section-headline">
+						<span th:text="${user.email}"></span>
+					</h2>
+				</h2>
+			</div>
+		</div>
+
+		<hr />
+		<div class="row">
+
+			<div class="alert alert-danger" th:if="${emailExists}">
+				<strong>Cette adresse email est déjà utilisée</strong>
+			</div>
+
+			<div class="alert alert-success" th:if="${updateSuccess}">
+				<strong>Informations mises à jour</strong>
+			</div>
+			<div class="bg-info" th:if="${updateUserInfo}">User info
+				updated.</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+					<li class="active"><a class="no-under" href="#tab-1"
+						data-toggle="tab"><span>Modifier</span></a></li>
+					<!-- <li th:classappend="${classActiveOrders}? 'active'"><a
+                        href="#tab-2" data-toggle="tab"><span style="color: red;">Orders</span></a></li>
+                <li th:classappend="${classActiveBilling}? 'active'"><a
+                        href="#tab-3" data-toggle="tab"><span style="color: red;">Billing</span></a></li>
+                <li th:classappend="${classActiveShipping}? 'active'"><a
+                        href="#tab-4" data-toggle="tab"><span style="color: red;">Shipping</span></a></li> -->
+				</ul>
+
+				<!-- Tab panels -->
+				<div class="tab-content">
+
+					<!-- Edit user information -->
+					<div class="tab-pane fade in active" id="tab-1">
+						<div class="panel-group">
+							<div class="panel panel-default" style="border: none;">
+								<div class="panel-body"
+									style="background-color: #ededed; margin-top: 20px;">
+
+
+									<form th:action="@{/updateUserInfo}" method="post"
+										enctype="multipart/form-data">
+
+										<input type="hidden" name="id" th:value="${user.id}" />
+
+										<div class="form-group">
+											<div class="row">
+												<div class="col-xs-6">
+													<label for="firstName">* Prénom</label> <input type="text"
+														required="required" class="form-control" id="firstName"
+														name="firstName" th:value="${user.firstName}" />
+												</div>
+
+												<div class="col-xs-6">
+													<label for="lastName">* Nom</label> <input type="text"
+														required="required" class="form-control" id="lastName"
+														name="lastName" th:value="${user.lastName}" />
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="email">* Email</label><input type="text"
+												class="form-control" id="email" name="email"
+												th:value="${user.email}" />
+										</div>
+										<p style="color: #828282"></p>
+
+										<div th:if="${user.city != null}" class="form-group" id="city">
+											<label for="city">* Ville</label> <select name="city" id="citySelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir une ville</option>
+												<option th:selected="(${user.city}=='Paris')" th:value="Paris">Paris</option>
+												<option th:selected="(${user.city}=='Lyon')" th:value="Lyon">Lyon</option>
+											</select>
+										</div>
+										
+										<div th:if="${user.city == null}" class="form-group" id="city">
+											<label for="city">* Ville</label> <select name="city" id="citySelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir une ville</option>
+												<option th:value="Paris">Paris</option>
+												<option th:value="Lyon">Lyon</option>
+											</select>
+										</div>
+										<div class="form-group" th:if="${user.category != null}">
+											<label for="category">* Catégorie</label> <select
+												id="category" required="required" name="category"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:selected="(${user.category.name()}=='Etincelle')" th:value="Etincelle">Etincelle</option>
+												<option th:selected="(${user.category.name()}=='Mentore')" th:value="Mentore">Mentor.e</option>
+												<option th:selected="(${user.category.name()}=='Coach')" th:value="Coach">Coach</option>
+												<option th:selected="(${user.category.name()}=='Staff')" th:value="Staff">Staff</option>
+											</select>
+										</div>
+										
+										<div class="form-group" th:if="${user.category == null}">
+											<label for="category">* Catégorie</label> <select
+												id="category" required="required" name="category"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:value="Etincelle">Etincelle</option>
+												<option th:value="Mentore">Mentor.e</option>
+												<option th:value="Coach">Coach</option>
+												<option th:value="Staff">Staff</option>
+											</select>
+										</div>
+										
+										<div class="form-group" id="type" th:if="${user.type != null}">
+											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect1"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:selected="(${user.type.name()}=='Carrière')" th:value="Carrière">Carrière</option>
+												<option th:selected="(${user.type.name()}=='Startup')" th:value="Startup">Startup</option>
+											</select>
+										</div>
+										
+										<div class="form-group" id="typeDiv" th:if="${user.type == null}">
+											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
+												class="form-control">
+												<option value="" selected="selected" disabled="disabled">Choisir</option>
+												<option th:value="Carrière">Carrière</option>
+												<option th:value="Startup">Startup</option>
+											</select>
+										</div>
+										
+										<!-- Pour étincelles -->
+										<div class="form-group"
+											th:if="(${user.category != null and user.category.name() == 'Etincelle'})">
+											<label for="promo">* Promo</label><input type="number" required="required"
+												class="form-control" id="promo" name="promo"
+												th:value="${user.promo}" />
+										</div>
+
+										<div class="form-group">
+											<label for="description">Description</label>
+											<!-- <p th:utext="${user.description}"></p> -->
+											<textarea class="form-control editme" id="description"
+												name="description" th:utext="${user.description}"></textarea>
+
+										</div>
+
+										<div class="form-group">
+											<label for="phone">Téléphone</label><input type="tel"
+												class="form-control" id="phone" name="phone"
+												pattern="[0-9]{10}" title="0612345678"
+												th:value="${user.phone}" />
+										</div>
+
+										<div class="form-group">
+											<label for="picture">Photo</label><input type="file"
+												class="form-control" id="picture" name="picture"
+												th:value="${user.picture}" />
+										</div>										
+
+										<!-- Pour mentor.e.s et coachs -->
+										<div class="form-group">
+											<label for="organization">Entreprise</label><input
+												type="text" class="form-control" id="organization"
+												name="organization" th:value="${user.organization}" />
+										</div>
+
+										<!-- Pour mentor.e.s, coachs et staff -->
+										<div class="form-group">
+											<label for="job_title">Poste</label><input type="text"
+												class="form-control" id="job_title" name="job_title"
+												th:value="${user.job_title}" />
+										</div>
+
+										<div class="form-group">
+											<label for="twitter">Compte twitter</label><input type="text"
+												pattern="[a-z0-9]+$" class="form-control" id="twitter"
+												name="twitter"
+												placeholder="Entrez le nom d'utilisateur uniquement"
+												th:value="${user.twitter}" />
+											<p style="color: #828282; font-size: 0.9em">Par exemple
+												pour https://twitter.com/SocialBuilder, entrez SocialBuilder</p>
+										</div>
+
+										<div class="form-group">
+											<label for="facebook">Compte facebook</label><input
+												type="text" class="form-control" id="facebook"
+												name="facebook"
+												placeholder="Entrez le nom d'utilisateur uniquement"
+												th:value="${user.facebook}" />
+											<p style="color: #828282; font-size: 0.9em">Par exemple
+												pour https://facebook.com/public/SocialBuilder, entrez
+												SocialBuilder</p>
+										</div>
+
+										<div class="form-group">
+											<label for="linkedin">Linkedin</label><input type="text"
+												class="form-control" id="linkedin" name="linkedin"
+												placeholder="Entrez le nom d'utilisateur uniquement"
+												th:value="${user.linkedin}" />
+											<p style="color: #828282; font-size: 0.9em">Par exemple
+												pour https://linkedin.com/in/SocialBuilder, entrez
+												SocialBuilder</p>
+										</div>
+										
+										<br />
+										<button type="submit" class="btn btn-primary">Valider</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end of container -->
+
+
+	<div th:replace="common/header :: body-bottom-scripts" />
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#typeDiv").hide();
+	});
+	
+	$(function () {
+		  $("#category").change(function() {
+		    var val = $(this).val();
+		    if(val === "Etincelle") {
+		        $("#typeDiv").show();
+		        $("#typeSelect").attr("required", "required");
+		    }
+		    else if(val === "Mentore") {
+		        $("#typeDiv").show();
+		        $("#typeSelect").attr("required", "required");
+		    }		    
+		    else if(val === "") {
+		        $("#typeDiv").hide();
+		    }
+		    else {
+		    	$("#typeDiv").hide();
+		    }
+		  });
+		});
+
+	</script>
+</body>
+</html>
