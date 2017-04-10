@@ -45,15 +45,14 @@ public class User implements UserDetails {
     @Transient
     private MultipartFile     picture;
     private String            password;
-    private String            phone;
     private boolean           enabled          = true;
-    private String            organization;
-    private String            job_title;
     private int               promo;
     private String            twitter;
     private String            facebook;
     private String            linkedin;
     private boolean           hasPicture       = false;
+
+    private String            sector;
 
     @Enumerated( EnumType.STRING )
     private Category          category;
@@ -65,12 +64,32 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<UserRole>     userRoles        = new HashSet<>();
 
-    public Boolean getHasPicture() {
-        return hasPicture;
+    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    @JsonIgnore
+    private Set<UserSkill>    userSkills       = new HashSet<>();
+
+    public String getSector() {
+        return sector;
     }
 
-    public void setHasPicture( Boolean hasPicture ) {
+    public void setSector( String sector ) {
+        this.sector = sector;
+    }
+
+    public Set<UserSkill> getUserSkills() {
+        return userSkills;
+    }
+
+    public void setUserSkills( Set<UserSkill> userSkills ) {
+        this.userSkills = userSkills;
+    }
+
+    public void setHasPicture( boolean hasPicture ) {
         this.hasPicture = hasPicture;
+    }
+
+    public boolean getHasPicture() {
+        return hasPicture;
     }
 
     public String getTwitter() {
@@ -193,14 +212,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone( String phone ) {
-        this.phone = phone;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -212,22 +223,6 @@ public class User implements UserDetails {
     public String getUsername() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization( String organization ) {
-        this.organization = organization;
-    }
-
-    public String getJob_title() {
-        return job_title;
-    }
-
-    public void setJob_title( String job_title ) {
-        this.job_title = job_title;
     }
 
     public int getPromo() {

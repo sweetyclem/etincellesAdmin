@@ -83,15 +83,16 @@
 												<option th:value="Etincelle">Etincelle</option>
 												<option th:value="Mentore">Mentor.e</option>
 												<option th:value="Coach">Coach</option>
-												<option th:value="Staff">Staff</option>
+												<option th:value="Equipe">Equipe Etincelle</option>
 											</select>
 										</div>
 
 										<div class="form-group" id="type">
-											<label for="type">* Carrière ou Startup</label> <select
-												name="type" id="typeSelect" class="form-control">
+											<label for="type">* Carrière ou Startup</label> <select name="type" id="typeSelect"
+												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
 												<option th:value="Carrière">Carrière</option>
+												<option th:value="CarrièreData">Carrière Booster Data Marketing</option>
 												<option th:value="Startup">Startup</option>
 											</select>
 										</div>
@@ -126,7 +127,7 @@
 										<div class="form-group">
 											<label for="category">Catégorie</label> <select id="category"
 												required="required" name="category" class="form-control">
-												<option selected="selected" th:value="Staff">Staff</option>
+												<option selected="selected" th:value="Equipe">Equipe</option>
 											</select>
 										</div>
 

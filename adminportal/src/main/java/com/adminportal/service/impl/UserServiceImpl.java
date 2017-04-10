@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.adminportal.entities.PasswordResetToken;
 import com.adminportal.entities.User;
+import com.adminportal.entities.UserSkill;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.City;
 import com.adminportal.repository.PasswordResetTokenRepository;
 import com.adminportal.repository.RoleRepository;
+import com.adminportal.repository.SkillRespository;
 import com.adminportal.repository.UserRepository;
 import com.adminportal.service.UserService;
 
@@ -29,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository               roleRepository;
+
+    @Autowired
+    private SkillRespository             skillRepository;
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
@@ -50,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser( User user, Set<UserRole> userRoles ) {
+    public User createUser( User user, Set<UserRole> userRoles, Set<UserSkill> userSkills ) {
         User localUser = userRepository.findByEmail( user.getEmail() );
 
         if ( localUser != null ) {
@@ -59,8 +64,12 @@ public class UserServiceImpl implements UserService {
             for ( UserRole ur : userRoles ) {
                 roleRepository.save( ur.getRole() );
             }
+            for ( UserSkill userSkill : userSkills ) {
+                skillRepository.save( userSkill.getSkill() );
+            }
 
             user.getUserRoles().addAll( userRoles );
+            user.getUserSkills().addAll( userSkills );
 
             localUser = userRepository.save( user );
         }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+</head>
+<body>
+	<div th:fragment="regularSectorSelect">
+		<select name="sector" id="sectorSelect" class="form-control">
+		<option value="" selected="selected" disabled="disabled">Choisir un secteur</option>
+			<option value='Agroalimentaire '>Agroalimentaire</option>
+			<option value='Artisanat / Culture / Spectacle'>Artisanat / Culture / Spectacle</option>
+			<option value='Banque / Finance / Assurance'>Banque / Finance / Assurance</option>
+			<option value='BTP / Matériaux de construction'>BTP / Matériaux de construction</option>
+			<option value='Chimie / Parachimie'>Chimie / Parachimie</option>
+			<option	value='Commerce / Négoce / Distribution / E-commerce'>Commerce / Négoce / Distribution / E-commerce</option>
+			<option value='Droit'>Droit</option>
+			<option value='Economie sociale et solidaire / Développement durable'>Economie sociale et solidaire / Développement durable</option>
+			<option value='Édition / Communication / Multimédia / Audiovisuel'>Édition / Communication / Multimédia / Audiovisuel</option>
+			<option value='Électronique / Électricité'>Électronique / Électricité</option>
+			<option value='Enseignement / Formation'>Enseignement / Formation</option>
+			<option value='Études et conseils / Services aux entreprises'>Études et conseils / Services aux entreprises</option>
+			<option value='Fonction publique'>Fonction publique</option>
+			<option value='Hôtellerie / Restauration / Tourisme'>Hôtellerie / Restauration / Tourisme</option>
+			<option value='Informatique / Télécoms'>Informatique / Télécoms</option>
+			<option value='Industrie / Machines et équipements'>Industrie / Machines et équipements</option>
+			<option value='Santé / Industrie pharmaceutique'>Santé / Industrie pharmaceutique</option>
+			<option value='Services à la personne'>Services à la personne</option>
+			<option value='Transports / Logistique'>Transports / Logistique</option>
+		</select>
+	</div>
+
+	<div th:fragment="userSectorSelect">
+		<select name="sector" id="sectorSelect" class="form-control">
+			<option	th:selected="${user.sector == 'Agroalimentaire'}"
+				value='Agroalimentaire'>Agroalimentaire</option>
+			<option th:selected="${user.sector == 'Artisanat / Culture / Spectacle'}"
+			 value='Artisanat / Culture / Spectacle'>Artisanat / Culture / Spectacle</option>
+			<option th:selected="${user.sector == 'Banque / Finance / Assurance'}"
+			 value='Banque / Finance / Assurance'>Banque / Finance / Assurance</option>
+			<option th:selected="${user.sector == 'BTP / Matériaux de construction'}"
+			 value='BTP / Matériaux de construction'>BTP / Matériaux de construction</option>
+			<option th:selected="${user.sector == 'Chimie / Parachimie'}"
+			 value='Chimie / Parachimie'>Chimie / Parachimie</option>
+			<option th:selected="${user.sector == 'Commerce / Négoce / Distribution / E-commerce'}"
+				value='Commerce / Négoce / Distribution / E-commerce'>Commerce / Négoce / Distribution / E-commerce</option>
+			<option th:selected="${user.sector == 'Droit'}"
+			 value='Droit'>Droit</option>
+			<option th:selected="${user.sector == 'Economie sociale et solidaire / Développement durable'}"
+			value='Economie sociale et solidaire / Développement durable'>Economie sociale et solidaire / Développement durable</option>
+			<option th:selected="${user.sector == 'Édition / Communication / Multimédia / Audiovisuel'}"
+			value='Édition / Communication / Multimédia / Audiovisuel'>Édition / Communication / Multimédia / Audiovisuel</option>
+			<option th:selected="${user.sector == 'Électronique / Électricité'}"
+			value='Électronique / Électricité'>Électronique / Électricité</option>
+			<option th:selected="${user.sector == 'Enseignement / Formation'}"
+			value='Enseignement / Formation'>Enseignement / Formation</option>
+			<option th:selected="${user.sector == 'Études et conseils / Services aux entreprises'}"
+			value='Études et conseils / Services aux entreprises'>Études et conseils / Services aux entreprises</option>
+			<option th:selected="${user.sector == 'Fonction publique'}"
+			value='Fonction publique'>Fonction publique</option>
+			<option th:selected="${user.sector == 'Hôtellerie / Restauration / Tourisme'}"
+			value='Hôtellerie / Restauration / Tourisme'>Hôtellerie / Restauration / Tourisme</option>
+			<option th:selected="${user.sector == 'Informatique / Télécoms'}"
+			value='Informatique / Télécoms'>Informatique / Télécoms</option>
+			<option th:selected="${user.sector == 'Industrie / Machines et équipements'}"
+			value='Industrie / Machines et équipements'>Industrie / Machines et équipements</option>
+			<option th:selected="${user.sector == 'Santé / Industrie pharmaceutique'}"
+			value='Santé / Industrie pharmaceutique'>Santé / Industrie pharmaceutique</option>
+			<option th:selected="${user.sector == 'Services à la personne'}"
+			value='Services à la personne'>Services à la personne</option>
+			<option th:selected="${user.sector == 'Transports / Logistique'}"
+			value='Transports / Logistique'>Transports / Logistique</option>
+		</select>
+	</div>
+
+</body>
+</html>

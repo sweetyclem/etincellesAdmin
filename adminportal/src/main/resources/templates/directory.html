@@ -23,19 +23,16 @@
 					<th></th>
 					<th>Prénom</th>
 					<th>Nom</th>
-					<th></th>
-					<th></th>
+					<th>Catégorie</th>
+					<th>Type</th>
 					<th>Promo</th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th>Entreprise</th>
-					<th>Poste</th>
+					<th>Ville</th>
+					<th>Email</th>
 					<th>Description</th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
+					<th>Image</th>
+					<th>Twitter</th>
+					<th>Facebook</th>
+					<th>Linkedin</th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -54,13 +51,11 @@
 					<td th:text="${user.promo}"></td>
 					<td th:text="${user.city}"></td>
 					<td th:text="${user.email}"></td>
-					<td th:text="${user.phone}"></td>
-					<td th:text="${user.organization}"></td>
-					<td th:text="${user.job_title}"></td>
 					<td th:utext="${#strings.abbreviate(user.description, 50)}"></td>
 					<td style="width: 100px"><img style="width: 100px" th:if="${user.hasPicture}"
-						th:src="${'https://etincelles.herokuapp.com//images/user/'+user.id+'.png'}"
+						th:src="${'/images/user/'+ user.id +'.png'}"
 						class="img-responsive center-block" />
+						<span th:if="${!user.hasPicture}">Pas d'image</span>
 					</td>			
 					<td><a th:if="${user.twitter}" target="_blank" class="btn btn-twitter btn-sm"
 						th:href="@{https://twitter.com/} + ${user.twitter}"><i
@@ -97,14 +92,14 @@
 
 	</main>
 	<div th:replace="common/header :: body-bottom-scripts"></div>
-	<!-- <script th:src="@{/js/scripts.js}"></script> -->
+	<!-- <script th:src="@{/js/scriptsAdmin.js}"></script> -->
 	<script type="text/javascript">
 		$(document).ready(
 				function() {
 					$("#usersTable").DataTable(
 							{
-								"lengthMenu" : [ [ 5, 10, 15, 20, -1 ],
-										[ 5, 10, 15, 20, "All" ] ],
+								"pageLength": 25,
+								"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 								"ordering" : true,
 								stateSave : true,
 								colReorder : true,

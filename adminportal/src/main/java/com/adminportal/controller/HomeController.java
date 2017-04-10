@@ -34,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.adminportal.entities.Message;
 import com.adminportal.entities.User;
+import com.adminportal.entities.UserSkill;
 import com.adminportal.entities.security.Role;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
@@ -127,13 +128,12 @@ public class HomeController {
                     String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
                     user.setPassword( encryptedPassword );
 
-                    Role role = new Role();
-                    role.setRoleId( 1 );
-                    role.setName( "ROLE_USER" );
+                    Role role = roleService.findByname( "ROLE_USER" );
 
                     Set<UserRole> userRoles = new HashSet<>();
                     userRoles.add( new UserRole( user, role ) );
-                    userService.createUser( user, userRoles );
+                    Set<UserSkill> userSkills = new HashSet<>();
+                    userService.createUser( user, userRoles, userSkills );
 
                     String token = UUID.randomUUID().toString();
                     userService.createPasswordResetTokenForUser( user, token );
@@ -203,35 +203,37 @@ public class HomeController {
             }
         }
 
-        /*
-         * To do : save pictures inside Etincelles app
-         * 
-         * MultipartFile picture = user.getPicture(); if ( !( picture.isEmpty()
-         * ) ) { try { byte[] bytes = picture.getBytes(); String name =
-         * user.getId() + ".png"; if ( Files.exists( Paths.get(
-         * "src/main/resources/static/images/user/" + name ) ) ) { Files.delete(
-         * Paths.get( "src/main/resources/static/images/user/" + name ) ); }
-         * BufferedOutputStream stream = new BufferedOutputStream( new
-         * FileOutputStream( new File( "src/main/resources/static/images/user/"
-         * + name ) ) ); stream.write( bytes ); stream.close();
-         * currentUser.setHasPicture( true ); } catch ( Exception e ) {
-         * System.out.println( "Erreur ligne 152" ); e.printStackTrace(); } }
-         */
+        MultipartFile picture = user.getPicture();
+        if ( !( picture.isEmpty() ) ) {
+            try {
+                byte[] bytes = picture.getBytes();
+                String name = user.getId() + ".png";
+                if ( Files.exists( Paths.get( "/home/clem/etincelles/images/user/" + name ) ) ) {
+                    Files.delete( Paths.get( "/home/clem/etincelles/images/user/" + name ) );
+                }
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream( new File( "/home/clem/etincelles/images/user/" + name ) ) );
+                stream.write( bytes );
+                stream.close();
+                currentUser.setHasPicture( true );
+            } catch ( Exception e ) {
+                System.out.println( "Erreur ligne 222" );
+                e.printStackTrace();
+            }
+        }
 
         currentUser.setFirstName( user.getFirstName() );
         currentUser.setLastName( user.getLastName() );
         currentUser.setEmail( user.getEmail() );
-        currentUser.setCategory( user.getCategory() );
-        currentUser.setCity( user.getCity() );
         currentUser.setDescription( user.getDescription() );
+        currentUser.setCity( user.getCity() );
+        currentUser.setCategory( user.getCategory() );
         currentUser.setFacebook( user.getFacebook() );
         currentUser.setTwitter( user.getTwitter() );
         currentUser.setLinkedin( user.getLinkedin() );
-        currentUser.setPhone( user.getPhone() );
         currentUser.setPromo( user.getPromo() );
         currentUser.setType( user.getType() );
-        currentUser.setOrganization( user.getOrganization() );
-        currentUser.setJob_title( user.getJob_title() );
+        currentUser.setSector( user.getSector() );
 
         userService.save( currentUser );
 
@@ -325,8 +327,8 @@ public class HomeController {
                 byte[] bytes = picture.getBytes();
                 String name = message.getId() + ".png";
                 if ( Files.exists( Paths.get(
-                        "src/main/resources/static/images/message/" + name ) ) ) {
-                    Files.delete( Paths.get( "src/main/resources/static/images/message/"
+                        "/home/clem/etincelles/images/message/" + name ) ) ) {
+                    Files.delete( Paths.get( "/home/clem/etincelles/images/message/"
                             + name ) );
                 }
                 BufferedOutputStream stream = new BufferedOutputStream(
@@ -376,12 +378,12 @@ public class HomeController {
                 String name = message.getId() + ".png";
                 if ( Files.exists( Paths.get(
                         "src/main/resources/static/images/message/" + name ) ) ) {
-                    Files.delete( Paths.get( "src/main/resources/static/images/message/"
+                    Files.delete( Paths.get( "/home/clem/etincelles/images/message/"
                             + name ) );
                 }
                 BufferedOutputStream stream = new BufferedOutputStream(
                         new FileOutputStream( new File(
-                                "src/main/resources/static/images/message/" + name ) ) );
+                                "/home/clem/etincelles/images/message/" + name ) ) );
                 stream.write( bytes );
                 stream.close();
                 message.setHasPicture( true );
@@ -467,7 +469,8 @@ public class HomeController {
                     Role role = roleService.findByname( "ROLE_ADMIN" );
                     Set<UserRole> userRoles = new HashSet<>();
                     userRoles.add( new UserRole( user, role ) );
-                    userService.createUser( user, userRoles );
+                    Set<UserSkill> userSkills = new HashSet<>();
+                    userService.createUser( user, userRoles, userSkills );
 
                     String token = UUID.randomUUID().toString();
                     userService.createPasswordResetTokenForUser( user, token );
