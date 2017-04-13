@@ -51,6 +51,7 @@ public class User implements UserDetails {
     private String            facebook;
     private String            linkedin;
     private boolean           hasPicture       = false;
+    private boolean           noContact        = false;
 
     private String            sector;
 
@@ -67,6 +68,14 @@ public class User implements UserDetails {
     @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     @JsonIgnore
     private Set<UserSkill>    userSkills       = new HashSet<>();
+
+    public boolean isNoContact() {
+        return noContact;
+    }
+
+    public void setNoContact( boolean noContact ) {
+        this.noContact = noContact;
+    }
 
     public String getSector() {
         return sector;

@@ -2,6 +2,7 @@ package com.adminportal.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.adminportal.entities.User;
@@ -18,4 +19,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findByfirstNameContaining( String firstName );
 
     List<User> findBylastNameContaining( String lastName );
+
+    @Query( "select u from User u order by u.lastName" )
+    List<User> findAll();
 }
