@@ -105,10 +105,6 @@ public class HomeController {
                     user.setEmail( email );
                     user.setCategory( category );
 
-                    System.out.println( "User email : " + email );
-                    System.out.println( "Category param : " + category );
-                    System.out.println( "User category : " + user.getCategory() );
-
                     if ( request.getParameterMap().containsKey( "type" ) ) {
                         String type = request.getParameter( "type" );
                         if ( type == Type.Carrière.name() ) {
@@ -336,8 +332,7 @@ public class HomeController {
                                 "src/main/resources/static/images/message/" + name ) ) );
                 stream.write( bytes );
                 stream.close();
-                currentMessage.setHasPicture(
-                        true );
+                currentMessage.setHasPicture( true );
             } catch ( Exception e ) {
                 System.out.println(
                         "Erreur ligne 331 sauvegarde de l'image" );
@@ -393,6 +388,7 @@ public class HomeController {
                 e.printStackTrace();
             }
         } else {
+            message.setHasPicture( false );
             System.out.println( "picture is empty" );
         }
 
@@ -458,9 +454,6 @@ public class HomeController {
                     user.setEmail( email );
                     user.setCategory( category );
 
-                    System.out.println( "User email : " + email );
-                    System.out.println( "Category param : " + category );
-                    System.out.println( "User category : " + user.getCategory() );
                     String password = SecurityUtility.randomPassword();
 
                     String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );

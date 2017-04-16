@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.adminportal.entities.User;
-import com.adminportal.entities.security.UserRole;
 import com.adminportal.repository.UserRepository;
 
 @Service
@@ -26,10 +25,6 @@ public class UserSecurityService implements UserDetailsService {
 
         if ( user.getUserRoles().isEmpty() ) {
             System.out.println( "userRoles is empty" );
-        }
-
-        for ( UserRole userRole : user.getUserRoles() ) {
-            System.out.println( userRole.getRole().getName() );
         }
 
         return user;
