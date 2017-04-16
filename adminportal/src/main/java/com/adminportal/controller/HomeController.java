@@ -1,5 +1,6 @@
 package com.adminportal.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ import com.adminportal.enumeration.Type;
 import com.adminportal.service.MessageService;
 import com.adminportal.service.RoleService;
 import com.adminportal.service.UserService;
+import com.adminportal.utility.FileUtility;
 import com.adminportal.utility.MailConstructor;
 import com.adminportal.utility.SecurityUtility;
 
@@ -62,6 +65,9 @@ public class HomeController {
 
     @Autowired
     private RoleService         roleService;
+
+    @Autowired
+    private FileUtility         fileUtility;
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
             .compile( "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE );
@@ -202,18 +208,20 @@ public class HomeController {
         MultipartFile picture = user.getPicture();
         if ( !( picture.isEmpty() ) ) {
             try {
-                byte[] bytes = picture.getBytes();
+                // Crop the image (uploadfile is an object of type
+                // MultipartFile)
+                BufferedImage croppedImage = fileUtility.cropImageSquare( picture.getBytes() );
+
                 String name = user.getId() + ".png";
                 if ( Files.exists( Paths.get( "/home/clem/etincelles/images/user/" + name ) ) ) {
                     Files.delete( Paths.get( "/home/clem/etincelles/images/user/" + name ) );
                 }
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream( new File( "/home/clem/etincelles/images/user/" + name ) ) );
-                stream.write( bytes );
-                stream.close();
+                // Save the file locally
+                File outputfile = new File( "/home/clem/etincelles/images/user/" + name );
+                ImageIO.write( croppedImage, "png", outputfile );
                 currentUser.setHasPicture( true );
             } catch ( Exception e ) {
-                System.out.println( "Erreur ligne 222" );
+                System.out.println( "Erreur ligne 198" );
                 e.printStackTrace();
             }
         }
