@@ -329,13 +329,13 @@ public class HomeController {
                 }
                 BufferedOutputStream stream = new BufferedOutputStream(
                         new FileOutputStream( new File(
-                                "src/main/resources/static/images/message/" + name ) ) );
+                                "/home/clem/etincelles/images/message/" + name ) ) );
                 stream.write( bytes );
                 stream.close();
                 currentMessage.setHasPicture( true );
             } catch ( Exception e ) {
                 System.out.println(
-                        "Erreur ligne 331 sauvegarde de l'image" );
+                        "Erreur ligne 338 sauvegarde de l'image" );
                 e.printStackTrace();
             }
         }
@@ -372,7 +372,7 @@ public class HomeController {
                 byte[] bytes = picture.getBytes();
                 String name = message.getId() + ".png";
                 if ( Files.exists( Paths.get(
-                        "src/main/resources/static/images/message/" + name ) ) ) {
+                        "/home/clem/etincelles/images/message/" + name ) ) ) {
                     Files.delete( Paths.get( "/home/clem/etincelles/images/message/"
                             + name ) );
                 }
