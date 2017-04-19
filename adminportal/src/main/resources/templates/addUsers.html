@@ -37,9 +37,9 @@
 						<p th:text="${email}"></p>
 					</div>
 				</div>
-				<div class="alert alert-success" th:if="${emailExists}">
+				<div class="alert alert-success" th:if="${userEmailExists}">
 					Rôle admin ajouté à :
-					<div th:each="email : ${emailExists}">
+					<div th:each="email : ${userEmailExists}">
 						<p th:text="${email}"></p>
 					</div>
 				</div>

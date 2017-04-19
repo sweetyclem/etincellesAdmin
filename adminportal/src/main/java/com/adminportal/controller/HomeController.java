@@ -504,7 +504,7 @@ public class HomeController {
         }
 
         if ( !( emailExists.isEmpty() ) ) {
-            model.addAttribute( "emailExists", emailExists );
+            model.addAttribute( "userEmailExists", emailExists );
         }
 
         if ( !( roleAdded.isEmpty() ) ) {
