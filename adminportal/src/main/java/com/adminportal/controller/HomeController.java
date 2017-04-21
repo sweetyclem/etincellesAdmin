@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -137,14 +136,14 @@ public class HomeController {
                     Set<UserSkill> userSkills = new HashSet<>();
                     userService.createUser( user, userRoles, userSkills );
 
-                    String token = UUID.randomUUID().toString();
-                    userService.createPasswordResetTokenForUser( user, token );
+                    // String token = UUID.randomUUID().toString();
+                    // userService.createPasswordResetTokenForUser( user, token
+                    // );
 
-                    String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort()
-                            + request.getContextPath();
+                    // String appUrl = "http://" + request.getServerName() + ":"
+                    // + request.getServerPort() + request.getContextPath();
 
-                    SimpleMailMessage mail = mailConstructor.constructResetTokenEmail( appUrl, request.getLocale(),
-                            token,
+                    SimpleMailMessage mail = mailConstructor.constructNewAccountEmail( request.getLocale(),
                             user,
                             password );
 
@@ -426,12 +425,13 @@ public class HomeController {
 
         userService.save( user );
 
-        String token = UUID.randomUUID().toString();
-        userService.createPasswordResetTokenForUser( user, token );
+        // String token = UUID.randomUUID().toString();
+        // userService.createPasswordResetTokenForUser( user, token );
 
-        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        // String appUrl = "http://" + request.getServerName() + ":" +
+        // request.getServerPort() + request.getContextPath();
 
-        SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail( appUrl, request.getLocale(), token, user,
+        SimpleMailMessage newEmail = mailConstructor.constructNewAccountEmail( request.getLocale(), user,
                 password );
 
         mailSender.send( newEmail );
@@ -473,14 +473,15 @@ public class HomeController {
                     Set<UserSkill> userSkills = new HashSet<>();
                     userService.createUser( user, userRoles, userSkills );
 
-                    String token = UUID.randomUUID().toString();
-                    userService.createPasswordResetTokenForUser( user, token );
+                    // String token = UUID.randomUUID().toString();
+                    // userService.createPasswordResetTokenForUser( user, token
+                    // );
 
-                    String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort()
-                            + request.getContextPath();
+                    // String appUrl = "http://" + request.getServerName() + ":"
+                    // + request.getServerPort() + request.getContextPath();
 
-                    SimpleMailMessage mail = mailConstructor.constructResetTokenEmail( appUrl, request.getLocale(),
-                            token, user, password );
+                    SimpleMailMessage mail = mailConstructor.constructNewAccountEmail( request.getLocale(), user,
+                            password );
                     mailSender.send( mail );
                     model.addAttribute( "emailSent", "true" );
                 } else {
