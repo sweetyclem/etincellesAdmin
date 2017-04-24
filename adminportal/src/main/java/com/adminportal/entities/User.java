@@ -50,6 +50,7 @@ public class User implements UserDetails {
     private String            twitter;
     private String            facebook;
     private String            linkedin;
+    private String            website;
     private boolean           hasPicture       = false;
     private boolean           noContact        = false;
 
@@ -68,6 +69,14 @@ public class User implements UserDetails {
     @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     @JsonIgnore
     private Set<UserSkill>    userSkills       = new HashSet<>();
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite( String website ) {
+        this.website = website;
+    }
 
     public boolean isNoContact() {
         return noContact;
