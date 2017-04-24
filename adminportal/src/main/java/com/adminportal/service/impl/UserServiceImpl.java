@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.adminportal.entities.PasswordResetToken;
 import com.adminportal.entities.User;
@@ -21,6 +22,7 @@ import com.adminportal.repository.SkillRespository;
 import com.adminportal.repository.UserRepository;
 import com.adminportal.service.UserService;
 
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
 
