@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.adminportal.entities.PasswordResetToken;
 import com.adminportal.entities.User;
-import com.adminportal.entities.UserSkill;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.City;
@@ -19,7 +18,7 @@ public interface UserService {
 
     User findById( Long id );
 
-    User createUser( User user, Set<UserRole> userRoles, Set<UserSkill> userSkills ) throws Exception;
+    User createUser( User user, Set<UserRole> userRoles ) throws Exception;
 
     User save( User user );
 

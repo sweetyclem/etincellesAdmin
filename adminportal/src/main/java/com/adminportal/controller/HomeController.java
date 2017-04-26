@@ -35,7 +35,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.adminportal.entities.Message;
 import com.adminportal.entities.User;
-import com.adminportal.entities.UserSkill;
 import com.adminportal.entities.security.Role;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
@@ -133,8 +132,8 @@ public class HomeController {
 
                     Set<UserRole> userRoles = new HashSet<>();
                     userRoles.add( new UserRole( user, role ) );
-                    Set<UserSkill> userSkills = new HashSet<>();
-                    userService.createUser( user, userRoles, userSkills );
+                    user.setSkills( new ArrayList<>() );
+                    userService.createUser( user, userRoles );
 
                     // String token = UUID.randomUUID().toString();
                     // userService.createPasswordResetTokenForUser( user, token
@@ -470,8 +469,7 @@ public class HomeController {
                     Role role = roleService.findByname( "ROLE_ADMIN" );
                     Set<UserRole> userRoles = new HashSet<>();
                     userRoles.add( new UserRole( user, role ) );
-                    Set<UserSkill> userSkills = new HashSet<>();
-                    userService.createUser( user, userRoles, userSkills );
+                    userService.createUser( user, userRoles );
 
                     // String token = UUID.randomUUID().toString();
                     // userService.createPasswordResetTokenForUser( user, token

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.adminportal.entities.PasswordResetToken;
 import com.adminportal.entities.User;
-import com.adminportal.entities.UserSkill;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.City;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser( User user, Set<UserRole> userRoles, Set<UserSkill> userSkills ) {
+    public User createUser( User user, Set<UserRole> userRoles ) {
         User localUser = userRepository.findByEmail( user.getEmail() );
 
         if ( localUser != null ) {
@@ -66,12 +65,8 @@ public class UserServiceImpl implements UserService {
             for ( UserRole ur : userRoles ) {
                 roleRepository.save( ur.getRole() );
             }
-            for ( UserSkill userSkill : userSkills ) {
-                skillRepository.save( userSkill.getSkill() );
-            }
 
             user.getUserRoles().addAll( userRoles );
-            user.getUserSkills().addAll( userSkills );
 
             localUser = userRepository.save( user );
         }

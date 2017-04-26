@@ -2,6 +2,7 @@ package com.adminportal.entities;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -66,9 +70,17 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<UserRole>     userRoles        = new HashSet<>();
 
-    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-    @JsonIgnore
-    private Set<UserSkill>    userSkills       = new HashSet<>();
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable( name = "user_skill", joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "skill_id", referencedColumnName = "id" ) )
+    private List<Skill>       skills;
+
+    public List<Skill> getSkills() {
+        return this.skills;
+    }
+
+    public void setSkills( final List<Skill> skills ) {
+        this.skills = skills;
+    }
 
     public String getWebsite() {
         return website;
@@ -92,14 +104,6 @@ public class User implements UserDetails {
 
     public void setSector( String sector ) {
         this.sector = sector;
-    }
-
-    public Set<UserSkill> getUserSkills() {
-        return userSkills;
-    }
-
-    public void setUserSkills( Set<UserSkill> userSkills ) {
-        this.userSkills = userSkills;
     }
 
     public void setHasPicture( boolean hasPicture ) {
