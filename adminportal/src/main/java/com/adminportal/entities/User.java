@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.SortNatural;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,209 +36,220 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
-    @Column( name = "id", nullable = false, updatable = false )
-    private Long              id;
-    private String            firstName;
-    private String            lastName;
-    @Column( name = "email", nullable = false )
-    private String            email;
-    @Column( columnDefinition = "text" )
-    private String            description;
-    @Enumerated( EnumType.STRING )
-    private City              city;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    @Column(name = "email", nullable = false)
+    private String email;
+    @Column(columnDefinition = "text")
+    private String description;
+    @Enumerated(EnumType.STRING)
+    private City city;
     @Transient
-    private MultipartFile     picture;
-    private String            password;
-    private boolean           enabled          = true;
-    private int               promo;
-    private String            twitter;
-    private String            facebook;
-    private String            linkedin;
-    private String            website;
-    private boolean           hasPicture       = false;
-    private boolean           noContact        = false;
+    private MultipartFile picture;
+    private String password;
+    private boolean enabled = true;
+    private int promo;
+    private String twitter;
+    private String facebook;
+    private String linkedin;
+    private String website;
+    private boolean hasPicture = false;
+    private boolean noContact = false;
+    private String sector;
+    private String currentPosition;
 
-    private String            sector;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
-    @Enumerated( EnumType.STRING )
-    private Category          category;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
-    @Enumerated( EnumType.STRING )
-    private Type              type;
-
-    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<UserRole>     userRoles        = new HashSet<>();
+    private Set<UserRole> userRoles = new HashSet<>();
 
-    @ManyToMany( fetch = FetchType.EAGER )
-    @JoinTable( name = "user_skill", joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "skill_id", referencedColumnName = "id" ) )
-    private List<Skill>       skills;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_skill", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
+    @SortNatural
+    @javax.persistence.OrderBy("name")
+    private List<Skill> skills;
+
+    public String getCurrentPosition() {
+        return this.currentPosition;
+    }
+
+    public void setCurrentPosition(final String currentPosition) {
+        this.currentPosition = currentPosition;
+    }
 
     public List<Skill> getSkills() {
         return this.skills;
     }
 
-    public void setSkills( final List<Skill> skills ) {
+    public void setSkills(final List<Skill> skills) {
         this.skills = skills;
     }
 
     public String getWebsite() {
-        return website;
+        return this.website;
     }
 
-    public void setWebsite( String website ) {
+    public void setWebsite(final String website) {
         this.website = website;
     }
 
     public boolean isNoContact() {
-        return noContact;
+        return this.noContact;
     }
 
-    public void setNoContact( boolean noContact ) {
+    public void setNoContact(final boolean noContact) {
         this.noContact = noContact;
     }
 
     public String getSector() {
-        return sector;
+        return this.sector;
     }
 
-    public void setSector( String sector ) {
+    public void setSector(final String sector) {
         this.sector = sector;
     }
 
-    public void setHasPicture( boolean hasPicture ) {
+    public void setHasPicture(final boolean hasPicture) {
         this.hasPicture = hasPicture;
     }
 
     public boolean getHasPicture() {
-        return hasPicture;
+        return this.hasPicture;
     }
 
     public String getTwitter() {
-        return twitter;
+        return this.twitter;
     }
 
-    public void setTwitter( String twitter ) {
+    public void setTwitter(final String twitter) {
         this.twitter = twitter;
     }
 
     public String getFacebook() {
-        return facebook;
+        return this.facebook;
     }
 
-    public void setFacebook( String facebook ) {
+    public void setFacebook(final String facebook) {
         this.facebook = facebook;
     }
 
     public String getLinkedin() {
-        return linkedin;
+        return this.linkedin;
     }
 
-    public void setLinkedin( String linkedin ) {
+    public void setLinkedin(final String linkedin) {
         this.linkedin = linkedin;
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
-    public void setType( Type type ) {
+    public void setType(final Type type) {
         this.type = type;
     }
 
     public Category getCategory() {
-        return category;
+        return this.category;
     }
 
-    public void setCategory( Category category ) {
+    public void setCategory(final Category category) {
         this.category = category;
     }
 
     public Set<UserRole> getUserRoles() {
-        return userRoles;
+        return this.userRoles;
     }
 
-    public void setUserRoles( Set<UserRole> userRoles ) {
+    public void setUserRoles(final Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
-    public void setId( Long id ) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public void setEnabled( boolean enabled ) {
+    public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 
     public boolean getEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
-    public void setFirstName( String firstName ) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
-    public void setLastName( String lastName ) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
-    public void setEmail( String email ) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
     public City getCity() {
-        return city;
+        return this.city;
     }
 
-    public void setCity( City city ) {
+    public void setCity(final City city) {
         this.city = city;
     }
 
     public MultipartFile getPicture() {
-        return picture;
+        return this.picture;
     }
 
-    public void setPicture( MultipartFile picture ) {
+    public void setPicture(final MultipartFile picture) {
         this.picture = picture;
     }
 
+    @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword( String password ) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        userRoles.forEach( p -> authorities.add( new Authority( p.getRole().getName() ) ) );
+        final Set<GrantedAuthority> authorities = new HashSet<>();
+        this.userRoles.forEach(p -> authorities.add(new Authority(p.getRole().getName())));
         return authorities;
     }
 
@@ -248,10 +260,10 @@ public class User implements UserDetails {
     }
 
     public int getPromo() {
-        return promo;
+        return this.promo;
     }
 
-    public void setPromo( int promo ) {
+    public void setPromo(final int promo) {
         this.promo = promo;
     }
 
@@ -276,6 +288,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         // TODO Auto-generated method stub
-        return enabled;
+        return this.enabled;
     }
 }

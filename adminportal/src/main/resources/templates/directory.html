@@ -28,6 +28,7 @@
 					<th>Promo</th>
 					<th>Ville</th>
 					<th>Email</th>
+					<th>Situation actuelle</th>
 					<th>Description</th>
 					<th>Image</th>
 					<th>Twitter</th>
@@ -51,6 +52,7 @@
 					<td><span th:text="${user.promo}"></span></td>
 					<td><span th:text="${user.city}"></span></td>
 					<td><span th:text="${user.email}"></span></td>
+					<td><span th:text="${user.currentPosition}"></span></td>
 					<td><span th:utext="${#strings.abbreviate(user.description, 200)}"></span></td>
 					<td style="width: 100px">
 					<img style="width: 100px" th:if="${user.hasPicture}"
