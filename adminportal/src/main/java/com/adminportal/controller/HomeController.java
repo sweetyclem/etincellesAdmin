@@ -110,12 +110,12 @@ public class HomeController {
                     if ( request.getParameterMap().containsKey( "type" ) ) {
                         final String type = request.getParameter( "type" );
 
-                        if ( Type.Carrière == Type.valueOf( type ) ) {
-                            user.setType( Type.Carrière );
+                        if ( Type.Carriere == Type.valueOf( type ) ) {
+                            user.setType( Type.Carriere );
                         } else if ( Type.Startup == Type.valueOf( type ) ) {
                             user.setType( Type.Startup );
-                        } else if ( Type.CarrièreData == Type.valueOf( type ) ) {
-                            user.setType( Type.CarrièreData );
+                        } else if ( Type.CarriereData == Type.valueOf( type ) ) {
+                            user.setType( Type.CarriereData );
                         }
                     } else {
                         if ( user.getCategory().equals( Category.Etincelle )

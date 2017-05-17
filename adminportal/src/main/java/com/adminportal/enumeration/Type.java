@@ -1,7 +1,7 @@
 package com.adminportal.enumeration;
 
 public enum Type {
-    Carrière( "Carrière" ), CarrièreData( "Carrière Booster Data Marketing" ), Startup( "Startup" );
+    Carriere( "Carrière" ), CarriereData( "Carrière Booster Data Marketing" ), Startup( "Startup" );
 
     private final String name;
 
