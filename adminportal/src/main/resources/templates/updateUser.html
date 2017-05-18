@@ -166,12 +166,12 @@
 										</div>
 										<div class="form-group" th:if="${user.currentPosition == null or (#strings.isEmpty(user.currentPosition))}">
                                         <label for="currentPosition">Situation actuelle</label>
-                                            <input name="currentPosition" type="text" class="form-control"/>
+                                            <input name="currentPosition" type="text" maxlength="45" class="form-control"/>
                                         </div>
                                         
                                         <div class="form-group" th:if="${user.currentPosition != null and !(#strings.isEmpty(user.currentPosition))}">
                                             <label for="currentPosition">Situation actuelle</label>
-                                            <input name="currentPosition" type="text" class="form-control" th:value="${user.currentPosition}"/>
+                                            <input name="currentPosition" type="text" class="form-control" maxlength="45" th:value="${user.currentPosition}"/>
                                         </div>
 
 										<div class="form-group">
