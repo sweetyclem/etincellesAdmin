@@ -10,23 +10,26 @@ import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.City;
 
 public interface UserService {
-    PasswordResetToken getPasswordResetToken( final String token );
+    PasswordResetToken getPasswordResetToken(final String token);
 
-    void createPasswordResetTokenForUser( final User user, final String token );
+    void createPasswordResetTokenForUser(final User user, final String token);
 
-    User findByEmail( String email );
+    User findByEmail(String email);
 
-    User findById( Long id );
+    User findById(Long id);
 
-    User createUser( User user, Set<UserRole> userRoles ) throws Exception;
+    User createUser(User user, Set<UserRole> userRoles) throws Exception;
 
-    User save( User user );
+    User save(User user);
 
     List<User> findAll();
 
-    List<User> findByCategory( Category category );
+    List<User> findByCategory(Category category);
 
-    List<User> findByCity( City city );
+    List<User> findByCity(City city);
 
-    public List<User> blurrySearch( String name );
+    public List<User> blurrySearch(String name);
+
+    public void removeOne(Long id);
+
 }

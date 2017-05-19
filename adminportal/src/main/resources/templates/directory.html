@@ -32,6 +32,7 @@
 					<th>Image</th>
 					<th></th>
 					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -57,7 +58,7 @@
 						<span th:if="${!user.hasPicture}">Pas d'image</span></td>
 					<td><a th:if="${user.enabled}" style="color: white;"
 						role="button" class="btn-danger btn btn-xs no-under"
-						th:href="@{/deleteUser(id=${user.id})}"><span
+						th:href="@{/deactivateUser(id=${user.id})}"><span
 							th:text="Désactiver"></span></a> <a th:if="${!user.enabled}"
 						style="color: white;" role="button"
 						class="btn-info btn btn-xs no-under"
@@ -69,6 +70,12 @@
 						class="btn-warning btn btn-xs no-under"
 						th:href="@{/forgetPassword(id=${user.id})}"><span
 							th:text="Renvoyer"></span></a></td>
+					<td><a
+                        onclick="return confirm('Supprimer le compte ?');"
+                        id="removeUser" style="color: white;" role="button"
+                        class="btn-danger btn btn-xs no-under"
+                        th:href="@{/removeUser(id=${user.id})}"><span
+                            th:text="Supprimer"></span></a></td>
 				</tr>
 			</tbody>
 		</table>
