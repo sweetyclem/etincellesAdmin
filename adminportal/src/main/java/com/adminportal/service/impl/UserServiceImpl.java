@@ -19,100 +19,96 @@ import com.adminportal.repository.PasswordResetTokenRepository;
 import com.adminportal.repository.RoleRepository;
 import com.adminportal.repository.SkillRespository;
 import com.adminportal.repository.UserRepository;
-import com.adminportal.repository.UserRoleRepository;
 import com.adminportal.service.UserService;
 
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private static final Logger          LOG = LoggerFactory.getLogger( UserService.class );
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository               userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleRepository               roleRepository;
 
     @Autowired
-    private SkillRespository skillRepository;
+    private SkillRespository             skillRepository;
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @Autowired
-    private UserRoleRepository userRoleRepository;
-
     @Override
-    public PasswordResetToken getPasswordResetToken(final String token) {
-        return this.passwordResetTokenRepository.findByToken(token);
+    public PasswordResetToken getPasswordResetToken( final String token ) {
+        return passwordResetTokenRepository.findByToken( token );
     }
 
     @Override
-    public void createPasswordResetTokenForUser(final User user, final String token) {
-        final PasswordResetToken myToken = new PasswordResetToken(token, user);
-        this.passwordResetTokenRepository.save(myToken);
+    public void createPasswordResetTokenForUser( final User user, final String token ) {
+        final PasswordResetToken myToken = new PasswordResetToken( token, user );
+        passwordResetTokenRepository.save( myToken );
     }
 
     @Override
-    public User findByEmail(final String email) {
-        return this.userRepository.findByEmail(email);
+    public User findByEmail( String email ) {
+        return userRepository.findByEmail( email );
     }
 
     @Override
-    public User createUser(final User user, final Set<UserRole> userRoles) {
-        User localUser = this.userRepository.findByEmail(user.getEmail());
+    public User createUser( User user, Set<UserRole> userRoles ) {
+        User localUser = userRepository.findByEmail( user.getEmail() );
 
-        if (localUser != null) {
-            LOG.info("user {} already exists. Nothing will be done.", user.getEmail());
+        if ( localUser != null ) {
+            LOG.info( "user {} already exists. Nothing will be done.", user.getEmail() );
         } else {
-            for (final UserRole ur : userRoles) {
-                this.roleRepository.save(ur.getRole());
+            for ( UserRole ur : userRoles ) {
+                roleRepository.save( ur.getRole() );
             }
 
-            user.getUserRoles().addAll(userRoles);
+            user.getUserRoles().addAll( userRoles );
 
-            localUser = this.userRepository.save(user);
+            localUser = userRepository.save( user );
         }
 
         return localUser;
     }
 
     @Override
-    public User save(final User user) {
-        return this.userRepository.save(user);
+    public User save( User user ) {
+        return userRepository.save( user );
     }
 
     @Override
-    public User findById(final Long id) {
-        return this.userRepository.findOne(id);
+    public User findById( Long id ) {
+        return userRepository.findOne( id );
     }
 
     @Override
     public List<User> findAll() {
-        return this.userRepository.findAll();
+        return (List<User>) userRepository.findAll();
     }
 
     @Override
-    public List<User> findByCategory(final Category category) {
-        return this.userRepository.findByCategory(category);
+    public List<User> findByCategory( Category category ) {
+        return userRepository.findByCategory( category );
     }
 
     @Override
-    public List<User> blurrySearch(final String name) {
-        final List<User> firstNameList = this.userRepository.findByfirstNameContaining(name);
-        final List<User> lastNameList = this.userRepository.findBylastNameContaining(name);
-        final List<User> activeUserList = new ArrayList<>();
+    public List<User> blurrySearch( String name ) {
+        List<User> firstNameList = userRepository.findByfirstNameContaining( name );
+        List<User> lastNameList = userRepository.findBylastNameContaining( name );
+        List<User> activeUserList = new ArrayList<>();
 
-        for (final User user : firstNameList) {
-            if (user.getEnabled()) {
-                activeUserList.add(user);
+        for ( User user : firstNameList ) {
+            if ( user.getEnabled() ) {
+                activeUserList.add( user );
             }
         }
 
-        for (final User user : lastNameList) {
-            if (user.getEnabled() && !firstNameList.contains(user)) {
-                activeUserList.add(user);
+        for ( User user : lastNameList ) {
+            if ( user.getEnabled() && !firstNameList.contains( user ) ) {
+                activeUserList.add( user );
             }
         }
 
@@ -120,19 +116,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findByCity(final City city) {
-        return this.userRepository.findByCity(city);
-    }
-
-    @Override
-    public void removeOne(final Long id) {
-        final User user = this.userRepository.findOne(id);
-        for (final UserRole userRole : user.getUserRoles()) {
-            userRole.setRole(null);
-            userRole.setUser(null);
-            this.userRoleRepository.delete(userRole.getUserRoleId());
-        }
-        this.userRepository.delete(id);
+    public List<User> findByCity( City city ) {
+        return userRepository.findByCity( city );
     }
 
 }
