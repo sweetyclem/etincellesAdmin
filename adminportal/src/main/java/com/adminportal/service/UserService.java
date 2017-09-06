@@ -29,4 +29,6 @@ public interface UserService {
     List<User> findByCity( City city );
 
     public List<User> blurrySearch( String name );
+
+    public void removeOne( Long id );
 }

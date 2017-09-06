@@ -257,28 +257,13 @@ public class HomeController {
         return "directory";
     }
 
-    @RequestMapping( "/deleteUser" )
-    public String deleteUser( final Model model, @RequestParam( "id" ) final Long id ) {
-        final User user = this.userService.findById( id );
-        user.setEnabled( false );
-        this.userService.save( user );
-        List<User> userList;
-        userList = this.userService.findAll();
+    @RequestMapping( value = "/removeUser" )
+    public String removeUser( @RequestParam( "id" ) final Long id, final Model model ) {
+        this.userService.removeOne( id );
+        final List<Message> messageList = this.messageService.findAll();
+        model.addAttribute( "messageList", messageList );
 
-        model.addAttribute( "userList", userList );
-        return "directory";
-    }
-
-    @RequestMapping( "/activateUser" )
-    public String activateUser( final Model model, @RequestParam( "id" ) final Long id ) {
-        final User user = this.userService.findById( id );
-        user.setEnabled( true );
-        this.userService.save( user );
-        List<User> userList;
-        userList = this.userService.findAll();
-
-        model.addAttribute( "userList", userList );
-        return "directory";
+        return "redirect:/directory";
     }
 
     @RequestMapping( "/addUsers" )

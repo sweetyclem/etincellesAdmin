@@ -17,8 +17,8 @@ import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.City;
 import com.adminportal.repository.PasswordResetTokenRepository;
 import com.adminportal.repository.RoleRepository;
-import com.adminportal.repository.SkillRespository;
 import com.adminportal.repository.UserRepository;
+import com.adminportal.repository.UserRoleRepository;
 import com.adminportal.service.UserService;
 
 @Transactional
@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService {
     private RoleRepository               roleRepository;
 
     @Autowired
-    private SkillRespository             skillRepository;
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
-    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private UserRoleRepository           userRoleRepository;
 
     @Override
     public PasswordResetToken getPasswordResetToken( final String token ) {
@@ -118,6 +118,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByCity( City city ) {
         return userRepository.findByCity( city );
+    }
+
+    @Override
+    public void removeOne( final Long id ) {
+        final User user = this.userRepository.findOne( id );
+        for ( final UserRole userRole : user.getUserRoles() ) {
+            userRole.setRole( null );
+            userRole.setUser( null );
+            this.userRoleRepository.delete( userRole.getUserRoleId() );
+        }
+        this.userRepository.delete( id );
     }
 
 }
