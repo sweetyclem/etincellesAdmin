@@ -18,7 +18,7 @@ public class MailConstructor {
 
         String url = "https://etincelles.co/login";
         String message = "Bonjour,\n\nVotre compte a été créé sur le site Etincelles.\n\n"
-                + "Veuillez cliquer sur le lien pour accéder à votre compte.\n";
+                + "Veuillez cliquer sur le lien pour accéder à votre compte et remplir votre profil.\n";
         String mess2 = "\n\nVotre mot de passe actuel est : \n" + password
                 + "\n\nPour des raisons de sécurité, nous vous conseillons de changer ce mot de passe.\n\nCordialement,\n\nL'équipe Etincelles";
         SimpleMailMessage email = new SimpleMailMessage();
