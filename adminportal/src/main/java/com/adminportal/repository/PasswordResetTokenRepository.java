@@ -1,6 +1,7 @@
 package com.adminportal.repository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,7 @@ public interface PasswordResetTokenRepository extends JpaRepository<PasswordRese
     @Modifying
     @Query( "delete from PasswordResetToken t where t.expiryDate <= ?1" )
     void deleteAllExpiredSince( Date now );
+
+    List<PasswordResetToken> findAllByUser( User user );
 
 }

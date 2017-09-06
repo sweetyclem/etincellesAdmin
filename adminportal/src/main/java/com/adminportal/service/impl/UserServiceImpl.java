@@ -128,6 +128,12 @@ public class UserServiceImpl implements UserService {
             userRole.setUser( null );
             this.userRoleRepository.delete( userRole.getUserRoleId() );
         }
+        List<PasswordResetToken> resetToken = this.passwordResetTokenRepository.findAllByUser( user );
+        if ( resetToken != null ) {
+            for ( PasswordResetToken passwordResetToken : resetToken ) {
+                this.passwordResetTokenRepository.delete( passwordResetToken.getId() );
+            }
+        }
         this.userRepository.delete( id );
     }
 
