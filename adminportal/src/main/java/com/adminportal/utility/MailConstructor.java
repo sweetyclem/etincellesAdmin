@@ -17,10 +17,10 @@ public class MailConstructor {
     public SimpleMailMessage constructNewAccountEmail( Locale locale, User user, String password ) {
 
         String url = "https://etincelles.co/login";
-        String message = "Bonjour,\n\nVotre compte a été créé sur le site Etincelles.\n\n"
-                + "Veuillez cliquer sur le lien pour accéder à votre compte et remplir votre profil.\n";
+        String message = "Bonjour,\n\nVotre compte a été créé sur la plateforme communautaire Etincelles de Social Builder.\n\n"
+                + "C'est le moment de compléter votre profil ! Plus vous partagerez d'informations sur votre parcours, vos compétences, vos projets, plus vous boosterez les échanges avec les autres membres de notre communauté.\n\nPour accéder à votre compte, cliquer sur ce lien : ";
         String mess2 = "\n\nVotre mot de passe actuel est : \n" + password
-                + "\n\nPour des raisons de sécurité, nous vous conseillons de changer ce mot de passe.\n\nCordialement,\n\nL'équipe Etincelles";
+                + "\n\nPour des raisons de sécurité, nous vous conseillons de changer ce mot de passe.\n\nA très vite sur etincelles.co !\n\nL'équipe Social Builder";
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo( user.getEmail() );
         email.setSubject( "Plateforme Etincelles- Nouveau compte" );
