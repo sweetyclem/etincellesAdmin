@@ -22,4 +22,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query( "select u from User u order by u.lastName" )
     List<User> findAll();
+
+    @Query( "select u.email from User u where u.lastName is null OR u.lastName = '' " )
+    List<String> findUnfilled();
 }

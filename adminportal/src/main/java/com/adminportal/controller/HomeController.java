@@ -496,4 +496,11 @@ public class HomeController {
         return "redirect:/login";
     }
 
+    @RequestMapping( "/unfilled" )
+    public String findUnfilled( final Model model ) {
+        List<String> emails = userService.findUnfilled();
+        model.addAttribute( "emailList", emails );
+        return "unfilled";
+    }
+
 }

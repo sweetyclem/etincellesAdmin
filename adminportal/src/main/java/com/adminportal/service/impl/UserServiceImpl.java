@@ -137,4 +137,10 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete( id );
     }
 
+    @Override
+    public List<String> findUnfilled() {
+        List<String> unfilled = userRepository.findUnfilled();
+        return unfilled;
+    }
+
 }

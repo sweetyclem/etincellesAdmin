@@ -31,4 +31,6 @@ public interface UserService {
     public List<User> blurrySearch( String name );
 
     public void removeOne( Long id );
+
+    List<String> findUnfilled();
 }
