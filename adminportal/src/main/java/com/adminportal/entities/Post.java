@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-public class Message {
+public class Post {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     @Column( name = "id", nullable = false, updatable = false )

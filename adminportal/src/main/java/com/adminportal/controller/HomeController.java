@@ -33,13 +33,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.adminportal.entities.Message;
+import com.adminportal.entities.Post;
 import com.adminportal.entities.User;
 import com.adminportal.entities.security.Role;
 import com.adminportal.entities.security.UserRole;
 import com.adminportal.enumeration.Category;
 import com.adminportal.enumeration.Type;
-import com.adminportal.service.MessageService;
+import com.adminportal.service.PostService;
 import com.adminportal.service.RoleService;
 import com.adminportal.service.UserService;
 import com.adminportal.utility.FileUtility;
@@ -59,7 +59,7 @@ public class HomeController {
     private UserService         userService;
 
     @Autowired
-    private MessageService      messageService;
+    private PostService         postService;
 
     @Autowired
     private RoleService         roleService;
@@ -260,8 +260,8 @@ public class HomeController {
     @RequestMapping( value = "/removeUser" )
     public String removeUser( @RequestParam( "id" ) final Long id, final Model model ) {
         this.userService.removeOne( id );
-        final List<Message> messageList = this.messageService.findAll();
-        model.addAttribute( "messageList", messageList );
+        final List<Post> postList = this.postService.findAll();
+        model.addAttribute( "postList", postList );
 
         return "redirect:/directory";
     }
@@ -276,106 +276,105 @@ public class HomeController {
 
     @RequestMapping( "/news" )
     public String news( final Model model ) {
-        final List<Message> messages = this.messageService.findAll();
-        model.addAttribute( "messageList", messages );
+        final List<Post> posts = this.postService.findAll();
+        model.addAttribute( "postList", posts );
         return "news";
     }
 
     @RequestMapping( value = "/remove", method = RequestMethod.POST )
     public String remove( @ModelAttribute( "id" ) final Long id, final Model model ) {
-        this.messageService.removeOne( id );
-        final List<Message> messageList = this.messageService.findAll();
-        model.addAttribute( "messageList", messageList );
+        this.postService.removeOne( id );
+        final List<Post> postList = this.postService.findAll();
+        model.addAttribute( "postList", postList );
 
         return "redirect:/news";
     }
 
-    @RequestMapping( value = "/updateMessage", method = RequestMethod.GET )
-    public String updateMessage( final Model model, @RequestParam( "id" ) final Long id ) {
-        final Message message = this.messageService.findById( id );
+    @RequestMapping( value = "/updatePost", method = RequestMethod.GET )
+    public String updatePost( final Model model, @RequestParam( "id" ) final Long id ) {
+        final Post post = this.postService.findById( id );
 
         model.addAttribute( "classActiveEdit", true );
-        model.addAttribute( "message", message );
-        return "updateMessage";
+        model.addAttribute( "post", post );
+        return "updatePost";
     }
 
-    @RequestMapping( value = "/updateMessage", method = RequestMethod.POST )
-    public String updateMessagePost( @ModelAttribute( "message" ) final Message message,
+    @RequestMapping( value = "/updatePost", method = RequestMethod.POST )
+    public String updatePostPost( @ModelAttribute( "post" ) final Post post,
             final HttpServletRequest request, final Model model ) throws Exception {
 
-        final Message currentMessage = this.messageService.findById( message.getId() );
-        if ( currentMessage == null ) {
-            throw new Exception( "Message not found" );
+        final Post currentPost = this.postService.findById( post.getId() );
+        if ( currentPost == null ) {
+            throw new Exception( "Post not found" );
         }
 
-        final MultipartFile picture = message.getPicture();
+        final MultipartFile picture = post.getPicture();
         if ( !picture.isEmpty() ) {
             try {
                 final byte[] bytes = picture.getBytes();
-                final String name = message.getId() + ".png";
-                if ( Files.exists( Paths.get( "/home/clem/etincelles/images/message/" + name ) ) ) {
-                    Files.delete( Paths.get( "/home/clem/etincelles/images/message/" + name ) );
+                final String name = post.getId() + ".png";
+                if ( Files.exists( Paths.get( "/home/clem/etincelles/images/post/" + name ) ) ) {
+                    Files.delete( Paths.get( "/home/clem/etincelles/images/post/" + name ) );
                 }
                 final BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream( new File( "/home/clem/etincelles/images/message/" + name ) ) );
+                        new FileOutputStream( new File( "/home/clem/etincelles/images/post/" + name ) ) );
                 stream.write( bytes );
                 stream.close();
-                currentMessage.setHasPicture( true );
+                currentPost.setHasPicture( true );
             } catch ( final Exception e ) {
                 System.out.println( "Erreur ligne 338 sauvegarde de l'image" );
                 e.printStackTrace();
             }
         }
 
-        currentMessage.setTitle( message.getTitle() );
-        // currentMessage.setDate( message.getDate() );
-        currentMessage.setText( message.getText() );
+        currentPost.setTitle( post.getTitle() );
+        currentPost.setText( post.getText() );
 
-        this.messageService.save( currentMessage );
+        this.postService.save( currentPost );
 
         model.addAttribute( "updateSuccess", true );
-        model.addAttribute( "message", currentMessage );
+        model.addAttribute( "post", currentPost );
         model.addAttribute( "classActiveEdit", true );
 
-        return "updateMessage";
+        return "updatePost";
     }
 
-    @RequestMapping( value = "/createMessage", method = RequestMethod.GET )
-    public String createMessage( final Model model ) {
+    @RequestMapping( value = "/createPost", method = RequestMethod.GET )
+    public String createPost( final Model model ) {
         model.addAttribute( "classActiveEdit", true );
-        return "createMessage";
+        return "createPost";
     }
 
-    @RequestMapping( value = "/createMessage", method = RequestMethod.POST )
-    public String createMessagePost( @ModelAttribute( "message" ) final Message message,
+    @RequestMapping( value = "/createPost", method = RequestMethod.POST )
+    public String createPostPost( @ModelAttribute( "post" ) final Post post,
             final HttpServletRequest request, final Model model ) throws Exception {
-        this.messageService.save( message );
+        this.postService.save( post );
 
-        final MultipartFile picture = message.getPicture();
+        final MultipartFile picture = post.getPicture();
         if ( !picture.isEmpty() ) {
             try {
                 final byte[] bytes = picture.getBytes();
-                final String name = message.getId() + ".png";
-                if ( Files.exists( Paths.get( "/home/clem/etincelles/images/message/" + name ) ) ) {
-                    Files.delete( Paths.get( "/home/clem/etincelles/images/message/" + name ) );
+                final String name = post.getId() + ".png";
+                if ( Files.exists( Paths.get( "/home/clem/etincelles/images/post/" + name ) ) ) {
+                    Files.delete( Paths.get( "/home/clem/etincelles/images/post/" + name ) );
                 }
                 final BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream( new File( "/home/clem/etincelles/images/message/" + name ) ) );
+                        new FileOutputStream( new File( "/home/clem/etincelles/images/post/" + name ) ) );
                 stream.write( bytes );
                 stream.close();
-                message.setHasPicture( true );
+                post.setHasPicture( true );
             } catch ( final Exception e ) {
                 System.out.println( "Erreur ligne 381 sauvegarde de l'image" );
                 e.printStackTrace();
             }
         } else {
-            message.setHasPicture( false );
+            post.setHasPicture( false );
             System.out.println( "picture is empty" );
         }
 
-        message.setDate( new Date() );
+        post.setDate( new Date() );
 
-        this.messageService.save( message );
+        this.postService.save( post );
 
         model.addAttribute( "createSuccess", true );
         model.addAttribute( "classActiveEdit", true );

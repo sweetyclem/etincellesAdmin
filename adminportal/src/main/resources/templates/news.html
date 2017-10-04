@@ -16,7 +16,7 @@
 		<div class="alert alert-danger" th:if="${createError}">
 				<strong>Article non créé</strong>
 		</div>
-		<table id="messagesTable"
+		<table id="postsTable"
 			class="table table-bordered table-hover table-striped">
 			<thead>
 				<tr>
@@ -29,22 +29,22 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr data-th-each="message : ${messageList}">
+				<tr data-th-each="post : ${postList}">
 					<td>
-					<a style="color: white;" role="button" class="btn-primary btn btn-xs no-under" th:href="@{/updateMessage(id=${message.id})}"><span
+					<a style="color: white;" role="button" class="btn-primary btn btn-xs no-under" th:href="@{/updatePost(id=${post.id})}"><span
 							th:text="Modifier"></span></a>
 					</td>
-					<td th:utext="${#dates.format(message.date,'dd MMM yyyy')}"></td>
-					<td th:text="${message.title}"></td>
-					<td class="text-justify" th:utext="${#strings.abbreviate(message.text, 200)}"></td>
-					<td  style="width: 100px;"><img
+					<td th:utext="${#dates.format(post.date,'dd MMM yyyy')}"></td>
+					<td th:text="${post.title}"></td>
+					<td class="text-justify" th:utext="${#strings.abbreviate(post.text, 200)}"></td>
+					<td style="width: 100px;"><img
 						style="width: 100px; height: 100px" class="img-responsive"
-						th:if="${message.hasPicture}"
-						th:src="@{'/images/message/'+ ${message.id} +'.png'}" /></td>
+						th:if="${post.hasPicture}"
+						th:src="@{'/images/post/'+ ${post.id} +'.png'}" /></td>
 					
 					<td>
-						<input hidden="hidden" name="id" th:value="${message.id}"/>
-						<button th:id="${message.id}" class="btn btn-danger btn-xs delete-message" type="submit" value="delete" >
+						<input hidden="hidden" name="id" th:value="${post.id}"/>
+						<button th:id="${post.id}" class="btn btn-danger btn-xs delete-post" type="submit" value="delete" >
 						<span class="fa fa-times"></span>Supprimer</button>
 					</td>
 				</tr>
@@ -57,7 +57,7 @@
 	<script type="text/javascript">
 		$(document).ready(
 				function() {
-					$("#messagesTable").DataTable(
+					$("#postsTable").DataTable(
 							{
 								"lengthMenu" : [ [ 5, 10, 15, 20, -1 ],
 										[ 5, 10, 15, 20, "All" ] ],
@@ -67,7 +67,7 @@
 								responsive : true,
 								buttons : [ 'copy', 'excel', 'pdf' ]
 							});
-					$('.delete-message').on('click', function (){
+					$('.delete-post').on('click', function (){
 						/*<![CDATA[*/
 					    var path = /*[[@{/}]]*/'remove';
 					    /*]]>*/
