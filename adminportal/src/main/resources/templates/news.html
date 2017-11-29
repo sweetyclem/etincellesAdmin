@@ -29,14 +29,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr data-th-each="post : ${postList}">
+				<tr data-th-each="post : ${postList}" th:with="preview=${#strings.abbreviate(post.text, 200)}">
 					<td>
 					<a style="color: white;" role="button" class="btn-primary btn btn-xs no-under" th:href="@{/updatePost(id=${post.id})}"><span
 							th:text="Modifier"></span></a>
 					</td>
 					<td th:utext="${#dates.format(post.date,'dd MMM yyyy')}"></td>
 					<td th:text="${post.title}"></td>
-					<td class="text-justify" th:utext="${#strings.abbreviate(post.text, 200)}"></td>
+					<td class="text-justify" th:text="${T(org.jsoup.Jsoup).parse(preview).text()}"></td>
 					<td style="width: 100px;"><img
 						style="width: 100px; height: 100px" class="img-responsive"
 						th:if="${post.hasPicture}"
