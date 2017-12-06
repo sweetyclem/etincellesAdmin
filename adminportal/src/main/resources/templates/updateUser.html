@@ -132,8 +132,10 @@
 												class="form-control">
 												<option value="" selected="selected" disabled="disabled">Choisir</option>
 												<option th:selected="(${user.type.name()}=='Carrière')" th:value="Carrière">Carrière</option>
-												<option th:selected="(${user.type.name()}=='Carrière Booster Data Marketing')" th:value="CarrièreData">Carrière Booster Data Marketing</option>
+												<option th:selected="(${user.type.name()}=='Data Marketing')" th:value="DataMarketing">Data Marketing</option>
 												<option th:selected="(${user.type.name()}=='Startup')" th:value="Startup">Startup</option>
+												<option th:selected="(${user.type.name()}=='DigitalBuisnessDevelopment')" th:value="Startup">Digital Business Development</option>
+												<option th:selected="(${user.type.name()}=='Startup')" th:value="SalesforceDatabaseAdmin">Administration Base de données Salesforce</option>
 											</select>
 										</div>
 										

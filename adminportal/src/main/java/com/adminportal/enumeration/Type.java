@@ -1,7 +1,8 @@
 package com.adminportal.enumeration;
 
 public enum Type {
-    Carriere( "Carrière" ), CarriereData( "Carrière Booster Data Marketing" ), Startup( "Startup" );
+    Carriere( "Carrière" ), DataMarketing( "Data Marketing" ), Startup( "Startup" ), DigitalBuisnessDevelopment(
+            "Digital Business Development" ), SalesforceDatabaseAdmin( "Administration Base de données Salesforce" );
 
     private final String name;
 

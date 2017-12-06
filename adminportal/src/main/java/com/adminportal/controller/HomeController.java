@@ -114,8 +114,12 @@ public class HomeController {
                             user.setType( Type.Carriere );
                         } else if ( Type.Startup == Type.valueOf( type ) ) {
                             user.setType( Type.Startup );
-                        } else if ( Type.CarriereData == Type.valueOf( type ) ) {
-                            user.setType( Type.CarriereData );
+                        } else if ( Type.DataMarketing == Type.valueOf( type ) ) {
+                            user.setType( Type.DataMarketing );
+                        } else if ( Type.DigitalBuisnessDevelopment == Type.valueOf( type ) ) {
+                            user.setType( Type.DigitalBuisnessDevelopment );
+                        } else if ( Type.SalesforceDatabaseAdmin == Type.valueOf( type ) ) {
+                            user.setType( Type.SalesforceDatabaseAdmin );
                         }
                     } else {
                         if ( user.getCategory().equals( Category.Etincelle )
