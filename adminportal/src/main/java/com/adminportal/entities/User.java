@@ -36,52 +36,52 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    @Column(name = "email", nullable = false)
-    private String email;
-    @Column(columnDefinition = "text")
-    private String description;
-    @Enumerated(EnumType.STRING)
-    private City city;
+    @GeneratedValue( strategy = GenerationType.AUTO )
+    @Column( name = "id", nullable = false, updatable = false )
+    private Long              id;
+    private String            firstName;
+    private String            lastName;
+    @Column( name = "email", nullable = false )
+    private String            email;
+    @Column( columnDefinition = "text" )
+    private String            description;
+    @Enumerated( EnumType.STRING )
+    private City              city;
     @Transient
-    private MultipartFile picture;
-    private String password;
-    private boolean enabled = true;
-    private int promo;
-    private String twitter;
-    private String facebook;
-    private String linkedin;
-    private String website;
-    private boolean hasPicture = false;
-    private boolean noContact = false;
-    private String sector;
-    private String currentPosition;
+    private MultipartFile     picture;
+    private String            password;
+    private boolean           enabled          = true;
+    private int               promo;
+    private String            twitter;
+    private String            facebook;
+    private String            linkedin;
+    private String            website;
+    private boolean           hasPicture       = false;
+    private boolean           noContact        = false;
+    private String            sector;
+    private String            currentPosition;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    @Enumerated( EnumType.STRING )
+    private Category          category;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
+    @Enumerated( EnumType.STRING )
+    private Type              type;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     @JsonIgnore
-    private Set<UserRole> userRoles = new HashSet<>();
+    private Set<UserRole>     userRoles        = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_skill", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable( name = "user_skill", joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "skill_id", referencedColumnName = "id" ) )
     @SortNatural
-    @javax.persistence.OrderBy("name")
-    private List<Skill> skills;
+    @javax.persistence.OrderBy( "name" )
+    private List<Skill>       skills;
 
     public String getCurrentPosition() {
         return this.currentPosition;
     }
 
-    public void setCurrentPosition(final String currentPosition) {
+    public void setCurrentPosition( final String currentPosition ) {
         this.currentPosition = currentPosition;
     }
 
@@ -89,7 +89,7 @@ public class User implements UserDetails {
         return this.skills;
     }
 
-    public void setSkills(final List<Skill> skills) {
+    public void setSkills( final List<Skill> skills ) {
         this.skills = skills;
     }
 
@@ -97,7 +97,7 @@ public class User implements UserDetails {
         return this.website;
     }
 
-    public void setWebsite(final String website) {
+    public void setWebsite( final String website ) {
         this.website = website;
     }
 
@@ -105,7 +105,7 @@ public class User implements UserDetails {
         return this.noContact;
     }
 
-    public void setNoContact(final boolean noContact) {
+    public void setNoContact( final boolean noContact ) {
         this.noContact = noContact;
     }
 
@@ -113,11 +113,11 @@ public class User implements UserDetails {
         return this.sector;
     }
 
-    public void setSector(final String sector) {
+    public void setSector( final String sector ) {
         this.sector = sector;
     }
 
-    public void setHasPicture(final boolean hasPicture) {
+    public void setHasPicture( final boolean hasPicture ) {
         this.hasPicture = hasPicture;
     }
 
@@ -129,7 +129,7 @@ public class User implements UserDetails {
         return this.twitter;
     }
 
-    public void setTwitter(final String twitter) {
+    public void setTwitter( final String twitter ) {
         this.twitter = twitter;
     }
 
@@ -137,7 +137,7 @@ public class User implements UserDetails {
         return this.facebook;
     }
 
-    public void setFacebook(final String facebook) {
+    public void setFacebook( final String facebook ) {
         this.facebook = facebook;
     }
 
@@ -145,7 +145,7 @@ public class User implements UserDetails {
         return this.linkedin;
     }
 
-    public void setLinkedin(final String linkedin) {
+    public void setLinkedin( final String linkedin ) {
         this.linkedin = linkedin;
     }
 
@@ -153,7 +153,7 @@ public class User implements UserDetails {
         return this.type;
     }
 
-    public void setType(final Type type) {
+    public void setType( final Type type ) {
         this.type = type;
     }
 
@@ -161,7 +161,7 @@ public class User implements UserDetails {
         return this.category;
     }
 
-    public void setCategory(final Category category) {
+    public void setCategory( final Category category ) {
         this.category = category;
     }
 
@@ -169,7 +169,7 @@ public class User implements UserDetails {
         return this.userRoles;
     }
 
-    public void setUserRoles(final Set<UserRole> userRoles) {
+    public void setUserRoles( final Set<UserRole> userRoles ) {
         this.userRoles = userRoles;
     }
 
@@ -177,11 +177,11 @@ public class User implements UserDetails {
         return this.id;
     }
 
-    public void setId(final Long id) {
+    public void setId( final Long id ) {
         this.id = id;
     }
 
-    public void setEnabled(final boolean enabled) {
+    public void setEnabled( final boolean enabled ) {
         this.enabled = enabled;
     }
 
@@ -193,7 +193,7 @@ public class User implements UserDetails {
         return this.firstName;
     }
 
-    public void setFirstName(final String firstName) {
+    public void setFirstName( final String firstName ) {
         this.firstName = firstName;
     }
 
@@ -201,7 +201,7 @@ public class User implements UserDetails {
         return this.lastName;
     }
 
-    public void setLastName(final String lastName) {
+    public void setLastName( final String lastName ) {
         this.lastName = lastName;
     }
 
@@ -209,7 +209,7 @@ public class User implements UserDetails {
         return this.email;
     }
 
-    public void setEmail(final String email) {
+    public void setEmail( final String email ) {
         this.email = email;
     }
 
@@ -217,7 +217,7 @@ public class User implements UserDetails {
         return this.description;
     }
 
-    public void setDescription(final String description) {
+    public void setDescription( final String description ) {
         this.description = description;
     }
 
@@ -225,7 +225,7 @@ public class User implements UserDetails {
         return this.city;
     }
 
-    public void setCity(final City city) {
+    public void setCity( final City city ) {
         this.city = city;
     }
 
@@ -233,7 +233,7 @@ public class User implements UserDetails {
         return this.picture;
     }
 
-    public void setPicture(final MultipartFile picture) {
+    public void setPicture( final MultipartFile picture ) {
         this.picture = picture;
     }
 
@@ -242,14 +242,14 @@ public class User implements UserDetails {
         return this.password;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword( final String password ) {
         this.password = password;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final Set<GrantedAuthority> authorities = new HashSet<>();
-        this.userRoles.forEach(p -> authorities.add(new Authority(p.getRole().getName())));
+        this.userRoles.forEach( p -> authorities.add( new Authority( p.getRole().getName() ) ) );
         return authorities;
     }
 
@@ -263,7 +263,7 @@ public class User implements UserDetails {
         return this.promo;
     }
 
-    public void setPromo(final int promo) {
+    public void setPromo( final int promo ) {
         this.promo = promo;
     }
 
