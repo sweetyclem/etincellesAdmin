@@ -352,36 +352,38 @@ public class HomeController {
     @RequestMapping( value = "/createPost", method = RequestMethod.POST )
     public String createPostPost( @ModelAttribute( "post" ) final Post post,
             final HttpServletRequest request, final Model model ) throws Exception {
-        this.postService.save( post );
+        if ( post != null ) {
+            // this.postService.save( post );
 
-        final MultipartFile picture = post.getPicture();
-        if ( !picture.isEmpty() ) {
-            try {
-                final byte[] bytes = picture.getBytes();
-                final String name = post.getId() + ".png";
-                if ( Files.exists( Paths.get( "/home/clem/etincelles/images/post/" + name ) ) ) {
-                    Files.delete( Paths.get( "/home/clem/etincelles/images/post/" + name ) );
+            if ( post.getPicture() != null ) {
+                final MultipartFile picture = post.getPicture();
+                if ( !picture.isEmpty() ) {
+                    try {
+                        final byte[] bytes = picture.getBytes();
+                        final String name = post.getId() + ".png";
+                        if ( Files.exists( Paths.get( "/home/clem/etincelles/images/post/" + name ) ) ) {
+                            Files.delete( Paths.get( "/home/clem/etincelles/images/post/" + name ) );
+                        }
+                        final BufferedOutputStream stream = new BufferedOutputStream(
+                                new FileOutputStream( new File( "/home/clem/etincelles/images/post/" + name ) ) );
+                        stream.write( bytes );
+                        stream.close();
+                        post.setHasPicture( true );
+                    } catch ( final Exception e ) {
+                        System.out.println( "Erreur ligne 381 sauvegarde de l'image" );
+                        e.printStackTrace();
+                    }
+                } else {
+                    post.setHasPicture( false );
+                    System.out.println( "picture is empty" );
                 }
-                final BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream( new File( "/home/clem/etincelles/images/post/" + name ) ) );
-                stream.write( bytes );
-                stream.close();
-                post.setHasPicture( true );
-            } catch ( final Exception e ) {
-                System.out.println( "Erreur ligne 381 sauvegarde de l'image" );
-                e.printStackTrace();
             }
-        } else {
-            post.setHasPicture( false );
-            System.out.println( "picture is empty" );
+
+            post.setDate( new Date() );
+            this.postService.save( post );
+            model.addAttribute( "createSuccess", true );
+            model.addAttribute( "classActiveEdit", true );
         }
-
-        post.setDate( new Date() );
-
-        this.postService.save( post );
-
-        model.addAttribute( "createSuccess", true );
-        model.addAttribute( "classActiveEdit", true );
 
         return "redirect:/news";
     }
