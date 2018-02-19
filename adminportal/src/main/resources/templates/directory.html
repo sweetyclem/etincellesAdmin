@@ -87,7 +87,7 @@
 							th:utext="${user.description}"></p></td>
 					<td style="width: 100px"><img style="width: 100px"
 						th:if="${user.hasPicture}"
-						th:src="${'/images/user/'+ user.id +'.png'}"
+						th:src="${'/user_resources/user/'+ user.id +'.png'}"
 						class="img-responsive center-block" /> <span
 						th:if="${!user.hasPicture}">Pas d'image</span></td>
 					<td><a
