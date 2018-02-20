@@ -64,14 +64,22 @@
 
 										</div>
 										
-										<div class="form-group">
-											<label for="picture">Image</label><input type="file"
+										<div class="form-group row">
+											<div class="col-md-6">
+												<label>Image actuelle :</label>
+												<img th:if="${post.hasPicture}" class="img-responsive" alt="" th:src="@{'/user_resources/post/'+ ${post.id} +'.png'}"/>
+												<img class="img-responsive" th:if="${!post.hasPicture}" th:src="${'/images/img0001.png'}"/>
+											</div>
+											<div class="col-md-6">
+												<label for="picture">Changer l'image :</label>
+												<input type="file"
 												class="form-control" id="picture" name="picture"
 												th:value="${post.picture}" />
+											</div>
 										</div>	
 																		
 										<br />
-										<button type="submit" class="btn btn-primary">Valider</button>
+										<button type="submit" class="btn btn-primary pull-right">Valider</button>
 									</form>
 								</div>
 							</div>

@@ -184,13 +184,7 @@
 											<textarea class="form-control editme" id="description"
 												name="description" th:utext="${user.description}"></textarea>
 
-										</div>
-
-										<div class="form-group">
-											<label for="picture">Photo</label><input type="file"
-												class="form-control" id="picture" name="picture"
-												th:value="${user.picture}" />
-										</div>										
+										</div>								
 
 										<div class="form-group">
 											<label for="twitter">Compte twitter</label><input type="url"
@@ -221,8 +215,22 @@
 												https://linkedin.com/in/SocialBuilder</p>
 										</div>
 										
+										<div class="form-group row">
+											<div class="col-md-6">
+												<label>Image actuelle :</label>
+												<img th:if="${user.hasPicture}" class="img-responsive" alt="" th:src="@{'/user_resources/user/'+ ${user.id} +'.png'}"/>
+												<img class="img-responsive" th:if="${!user.hasPicture}" th:src="${'/images/flower.jpeg'}"/>
+											</div>
+											<div class="col-md-6">
+												<label for="picture">Changer l'image :</label>
+											<input type="file"
+												class="form-control" id="picture" name="picture"
+												th:value="${user.picture}" />
+											</div>
+										</div>
+										
 										<br />
-										<button type="submit" class="btn btn-primary">Valider</button>
+										<button type="submit" class="btn btn-primary pull-right">Valider</button>
 									</form>
 								</div>
 							</div>
