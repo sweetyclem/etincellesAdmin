@@ -67,6 +67,9 @@ public class HomeController {
     @Autowired
     private FileUtility         fileUtility;
 
+    @Autowired
+    private SecurityUtility     securityUtility;
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
             .compile( "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE );
 
@@ -129,9 +132,9 @@ public class HomeController {
                         }
                     }
 
-                    final String password = SecurityUtility.randomPassword();
+                    final String password = securityUtility.randomPassword();
 
-                    final String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
+                    final String encryptedPassword = securityUtility.passwordEncoder().encode( password );
                     user.setPassword( encryptedPassword );
 
                     final Role role = this.roleService.findByname( "ROLE_USER" );
@@ -398,9 +401,9 @@ public class HomeController {
             return "redirect:/directory";
         }
 
-        final String password = SecurityUtility.randomPassword();
+        final String password = securityUtility.randomPassword();
 
-        final String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
+        final String encryptedPassword = securityUtility.passwordEncoder().encode( password );
         user.setPassword( encryptedPassword );
 
         this.userService.save( user );
@@ -443,9 +446,9 @@ public class HomeController {
                     user.setEmail( email );
                     user.setCategory( category );
 
-                    final String password = SecurityUtility.randomPassword();
+                    final String password = securityUtility.randomPassword();
 
-                    final String encryptedPassword = SecurityUtility.passwordEncoder().encode( password );
+                    final String encryptedPassword = securityUtility.passwordEncoder().encode( password );
                     user.setPassword( encryptedPassword );
 
                     final Role role = this.roleService.findByname( "ROLE_ADMIN" );
